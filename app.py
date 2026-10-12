@@ -12,7 +12,7 @@ import chips_view as CV
 import engine as E
 import report_view as RV
 import scanner as S
-from sectors import SECTORS, stocks_of
+from sectors import SECTORS, parse_csv, stocks_of
 
 st.set_page_config(page_title="產業掃描", page_icon="🔎", layout="centered")
 
@@ -40,8 +40,9 @@ st.markdown("""
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def get_sector_prices(sector):
-    return S.fetch_batch(stocks_of(sector))
+def get_prices(stock_key):
+    """stock_key = ((代號, 市場), ...)；同一份清單一小時內只抓一次。"""
+    return S.fetch_batch([{"code": c, "market": m} for c, m in stock_key])
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -80,12 +81,24 @@ with st.form("q"):
         hold = c2.selectbox("最長持有（交易日）", [15, 10, 5])
         discount = c1.number_input("手續費折扣（6 折填 0.6）", 0.1, 1.0, 1.0, 0.05)
         min_rr = c2.number_input("最低風險報酬比", 0.5, 3.0, 1.0, 0.1)
+        csv = st.file_uploader("自訂清單 CSV（選填，上傳後改掃這份清單）：欄位 代號,名稱,分類,市場（TW/TWO）",
+                               type=["csv"])
     go = st.form_submit_button("掃描", type="primary", use_container_width=True)
 
 params = {"capital": capital, "max_loss": max_loss, "target_net": target, "hold_days": hold,
           "fee_discount": discount, "min_rr": min_rr}
 
 if go:
+    if csv is not None:
+        try:
+            custom = parse_csv(csv)
+        except Exception as e:  # noqa: BLE001
+            st.error(f"自訂清單讀取失敗：{e}")
+            st.stop()
+        st.session_state["custom"] = custom
+        sector = f"自訂清單（{csv.name}）"
+    else:
+        st.session_state.pop("custom", None)
     st.session_state["req"] = (sector, tuple(sorted(params.items())))
 
 req = st.session_state.get("req")
@@ -99,13 +112,14 @@ if not req:
 sector, ptuple = req
 params = dict(ptuple)
 target, hold = params["target_net"], params["hold_days"]
-stocks = stocks_of(sector)
-key = (sector, ptuple, dt.datetime.now().strftime("%Y%m%d%H"))
+stocks = st.session_state.get("custom") or stocks_of(sector)
+stock_key = tuple((s["code"], s["market"]) for s in stocks)
+key = (sector, stock_key, ptuple, dt.datetime.now().strftime("%Y%m%d%H"))
 
 # ---------------- 掃描（同一小時、同設定只跑一次）----------------
 if st.session_state.get("scan_key") != key:
     with st.spinner(f"抓取 {len(stocks)} 檔歷史股價…"):
-        prices = get_sector_prices(sector)
+        prices = get_prices(stock_key)
         market = get_market()
     bar = st.progress(0.0, text="套用股票系統規則中…")
     rows = []
@@ -208,6 +222,9 @@ with st.expander(f"全部 {len(rows)} 檔結果"):
     if res["fail"]:
         st.caption("資料失敗：" + "、".join(f"{x['code']} {x['name']}" for x in res["fail"])
                    + "。可能是代碼變更、下市或資料源暫時無回應。")
+    st.download_button("下載完整結果 CSV（複盤紀錄用）",
+                       S.export_table(rows, sector, params).to_csv(index=False).encode("utf-8-sig"),
+                       f"scan_{data_date}.csv", "text/csv", use_container_width=True)
 
 # ---------------- 大盤籌碼 ----------------
 if st.toggle("顯示大盤籌碼（三大法人）"):
@@ -217,7 +234,7 @@ if st.toggle("顯示大盤籌碼（三大法人）"):
         st.warning(f"大盤籌碼區塊載入失敗：{str(e)[:120]}")
 
 if st.button("重新掃描（忽略快取）"):
-    get_sector_prices.clear()
+    get_prices.clear()
     get_market.clear()
     st.session_state.pop("scan_key", None)
     st.rerun()

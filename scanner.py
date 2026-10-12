@@ -128,3 +128,33 @@ def classify(rows: list[dict]) -> dict:
         "veto_n": sum(x["decision"] == "不可進場" for x in rows),
         "fail": [x for x in rows if x["decision"] == "資料失敗"],
     }
+
+
+def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
+    """完整結果表（給下載 CSV 做複盤紀錄用）。"""
+    import datetime as dt
+
+    now = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d %H:%M")
+    out = []
+    for x in rows:
+        r = x["r"] or {}
+        pl = r.get("plan") if r.get("decision") == "可進場" else None
+        st_ = r.get("stats") or {}
+        trig = r.get("trigger") or {}
+        out.append({
+            "掃描時間": now, "產業": sector, "資料日期": r.get("date", ""),
+            "代號": x["code"], "名稱": x["name"], "子類": x["group"], "決策": x["decision"],
+            "收盤": r.get("close"), "買進價": pl["entry"] if pl else None,
+            "停利": pl["tp3"] if pl else None, "2%停利": pl["tp2"] if pl else None,
+            "停損": pl["stop"] if pl else None,
+            "風報比": round(pl["rr"], 2) if pl and math.isfinite(pl["rr"]) else None,
+            "股數": pl["shares"] if pl else None, "預估最大損失": round(pl["max_loss"]) if pl else None,
+            "回測樣本": st_.get("n"),
+            "回測勝率%": round(st_["tp_rate"], 1) if st_.get("n", 0) >= MIN_SAMPLES else None,
+            "符合度%": round(r["fit"]) if r else None,
+            "觸發價": trig.get("price") if r.get("decision") != "可進場" else None,
+            "主要原因": "；".join(r.get("why", [])[:2]) or x.get("error", ""),
+            "淨利目標%": params.get("target_net"), "最長持有日": params.get("hold_days"),
+            "資料來源": x.get("src") or "",
+        })
+    return pd.DataFrame(out)

@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python tools/real_scan.py "AI 產業" 2>&1 | tee tools/last_scan.txt
+      - run: python tools/real_scan.py 2>&1 | tee tools/last_scan.txt
       - name: 保存結果
         run: |
           git config user.name "github-actions"
