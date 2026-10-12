@@ -2,6 +2,7 @@
 
 > 整理日期：2026-10-12　作者：hn13920753 × Claude
 > 母系統：「股票系統」App（https://github.com/hn13920753/stock-system），判斷引擎完全共用
+> 線上網址：https://stock-scanner-ai.streamlit.app
 > 程式倉庫：https://github.com/hn13920753/stock-scanner（Public，分支 main）
 
 ---
