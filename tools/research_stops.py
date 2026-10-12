@@ -75,3 +75,24 @@ text = "\n".join(out)
 print(text)
 (ROOT / "research").mkdir(exist_ok=True)
 (ROOT / "research" / "stops.txt").write_text(text, encoding="utf-8")
+
+
+# ---- 樣本外檢查：把資料切成前後兩段，看「停損 ≥ 1 ATR」這個過濾在兩段是否都有效 ----
+def line(name, g):
+    if len(g) == 0:
+        return f"{name}：0 筆"
+    return (f"{name}：{len(g)} 筆・先到停利 {(g['結果']=='停利').mean()*100:.1f}%・"
+            f"平均淨報酬 {g['淨報酬%'].mean():+.2f}%・總和 {g['淨報酬%'].sum():+.1f}%")
+
+
+out2 = ["\n== 樣本外檢查：停損 ≥ 1×ATR 過濾（只統計，未改規則）=="]
+cut = "2025-01-01"
+for name, part in (("前段 ~2024", bt[bt["訊號日"] < cut]), ("後段 2025~", bt[bt["訊號日"] >= cut])):
+    out2.append(f"[{name}]")
+    out2.append("  " + line("全部訊號（現行）", part))
+    out2.append("  " + line("停損 ≥ 1 ATR", part[part["停損/ATR"] >= 1]))
+    out2.append("  " + line("停損 < 1 ATR", part[part["停損/ATR"] < 1]))
+text2 = "\n".join(out2)
+print(text2)
+with open(ROOT / "research" / "stops.txt", "a", encoding="utf-8") as f:
+    f.write("\n" + text2)
