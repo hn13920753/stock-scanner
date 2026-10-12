@@ -1,0 +1,20 @@
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009823.TW"}}}
+$009823.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009815.TW"}}}
+$009815.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+
+3 Failed downloads:
+['009823.TW', '009815.TW', '00955.TW']: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+$009828.TWO: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$009826.TWO: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
+2026-10-12 執行・資料日期 2026-10-12・掃描 81 檔・新增訊號 3 筆
+累計 3 筆：待進場 3・持有中 0・已出場 0・未成交 0
+          訊號日     代號          名稱   產業          子類    訊號收盤   計畫停損 計畫停利3%   風報比 回測樣本 回測勝率% 符合度%            買點                 型態  大盤   狀態  進場日  進場價  停利價  出場日  出場價   結果 淨報酬% 持有天數 最大不利% 最大有利%  更新日
+0  2026-10-12  00940    元大台灣價值高息  ETF       台股高股息   13.34  13.18   13.8   1.9    6   NaN   94     回測型（保守買點）             缺口之上續漲  多頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN  NaN
+1  2026-10-12  00757     統一FANG+  ETF  國際・美股／全球大盤  147.25  146.9  152.3  4.83   31  32.3   95  突破型（積極／確認買點）  缺口之上續漲、紅黑紅、突破大量黑K  多頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN  NaN
+2  2026-10-12  00924  復華S&P500成長  ETF  國際・美股／全球大盤   34.66  34.47  35.84  3.22   17  23.5   94  突破型（積極／確認買點）             缺口之上續漲  多頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN  NaN
