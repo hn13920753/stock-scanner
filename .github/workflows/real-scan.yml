@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["*.py", "tools/**", "requirements.txt", ".github/workflows/real-scan.yml"]
+    paths: ["*.py", "tools/real_scan.py", "requirements.txt", ".github/workflows/real-scan.yml"]
+
+permissions:
+  contents: write
 
 jobs:
   scan:
@@ -16,4 +19,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python tools/real_scan.py "AI 產業"
+      - run: python tools/real_scan.py "AI 產業" 2>&1 | tee tools/last_scan.txt
+      - name: 保存結果
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add tools/last_scan.txt
+          git commit -m "真實資料掃描結果 [skip ci]" || exit 0
+          git pull --rebase && git push
