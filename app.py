@@ -4,15 +4,23 @@
 判斷邏輯全部在 engine.py（與股票系統 App 相同），本檔只負責畫面。
 """
 import datetime as dt
+import importlib
 
 import pandas as pd
 import streamlit as st
 
 import chips_view as CV
 import engine as E
+import market_chips as MC
 import report_view as RV
 import scanner as S
-from sectors import SECTORS, parse_csv, stocks_of
+import sectors as SEC
+
+# Streamlit Cloud 更新程式時，可能先換掉 app.py、卻還在用舊版的其他檔案（造成 ImportError）。
+# 每次執行都重新載入本專案的模組，確保所有檔案是同一個版本。
+for _m in (E, MC, SEC, S, RV, CV):
+    importlib.reload(_m)
+SECTORS, parse_csv, stocks_of = SEC.SECTORS, SEC.parse_csv, SEC.stocks_of
 
 st.set_page_config(page_title="產業掃描", page_icon="🔎", layout="centered")
 
