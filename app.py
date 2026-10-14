@@ -125,6 +125,9 @@ if not req:
     st.stop()
 
 sector, ptuple = req
+if sector not in SECTORS and not st.session_state.get("custom"):
+    st.session_state.pop("req", None)
+    st.rerun()
 params = dict(ptuple)
 target, hold = params["target_net"], params["hold_days"]
 stocks = st.session_state.get("custom") or stocks_of(sector)
