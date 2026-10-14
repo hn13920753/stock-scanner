@@ -158,3 +158,17 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
             "資料來源": x.get("src") or "",
         })
     return pd.DataFrame(out)
+
+
+def pooled_stats(rows: list[dict], group: str | None = None) -> dict:
+    """把同一次掃描中（可限定同子類）所有股票的歷史回測合併統計，增加樣本數。只做參考，不影響判斷。"""
+    import engine as E
+
+    bts = [x["r"]["bt"] for x in rows
+           if x.get("r") is not None and x["r"].get("bt") is not None and not x["r"]["bt"].empty
+           and (group is None or x["group"] == group)]
+    if not bts:
+        return {"n": 0}
+    s = E.Analyzer.summarize(pd.concat(bts, ignore_index=True))
+    s["stocks"] = len(bts)
+    return s

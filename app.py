@@ -28,7 +28,7 @@ st.set_page_config(page_title="產業掃描", page_icon="🔎", layout="centered
 
 st.markdown("""
 <style>
-.block-container{padding-top:1.2rem;padding-bottom:3rem;max-width:760px}
+.block-container{padding-top:4.2rem;padding-bottom:3rem;max-width:760px}
 .verdict{border-radius:16px;padding:18px 18px 14px;margin:6px 0 12px;color:#fff}
 .verdict .big{font-size:34px;font-weight:800;line-height:1.1}
 .verdict .sub{font-size:14px;opacity:.92;margin-top:6px;line-height:1.5}
@@ -68,6 +68,13 @@ def qty_text(shares):
     return ((f"{lots} 張" if lots else "") + (f" {odd} 股" if odd else "")).strip() or "0 股"
 
 
+def pool_text(s):
+    if s.get("n", 0) < S.MIN_SAMPLES:
+        return f"樣本 {s.get('n', 0)} 筆（不計勝率）"
+    return (f"{s['stocks']} 檔共 {s['n']} 筆・先到停利 {s['tp_rate']:.0f}%・平均淨報酬 {s['avg']:+.2f}%"
+            + ("" if s["n"] >= 30 else "・僅供參考"))
+
+
 def win_text(r):
     s = r["stats"]
     if s.get("n", 0) == 0:
@@ -78,7 +85,7 @@ def win_text(r):
 
 
 # ------------------------------------------------------------------
-page = st.radio("頁面", ["🔎 產業掃描", "📒 進場紀錄與驗證"], horizontal=True, label_visibility="collapsed")
+page = st.radio("切換頁面", ["🔎 產業掃描", "📒 進場紀錄與驗證"], horizontal=True)
 if page.startswith("📒"):
     RECV.render()
     st.stop()
@@ -164,6 +171,8 @@ st.markdown(
     f'<div style="background:#c0392b"><b>{res["veto_n"]}</b><span>不可進場</span></div>'
     f'<div style="background:#7f8c8d"><b>{len(res["fail"])}</b><span>資料失敗</span></div>'
     '</div>', unsafe_allow_html=True)
+ps = S.pooled_stats(rows)
+st.caption(f"本類別合併回測（全部 {len(stocks)} 檔的歷史同類訊號）：{pool_text(ps)}")
 if market:
     st.caption(f"大盤（加權指數 {market['date']}）：{market['state']}・收盤 {market['close']:,.0f}・"
                f"MA20 {market['ma20']:,.0f}・MA60 {market['ma60']:,.0f}")
@@ -187,6 +196,7 @@ else:
             f'<div class="row">收盤 {price(r["close"])}（{r["chg"]:+.2f}%）・買進約 <b>{price(pl["entry"])}</b>'
             f'・停利 <b>{price(pl["tp3"])}</b>・停損 <b>{price(pl["stop"])}</b></div>'
             f'<div class="row">風報比 <b>{pl["rr"]:.2f}</b>・回測勝率 {win_text(r)}・符合度 {r["fit"]:.0f}%</div>'
+            f'<div class="m">同子類合併回測：{pool_text(S.pooled_stats(rows, x["group"]))}</div>'
             f'<div class="m">{qty_text(pl["shares"])}（約 {money(pl["cost"])} 元，最大損失約 {money(pl["max_loss"])} 元）'
             f'{early}・{r["signal"]["type"]}・'
             + "、".join(E.PATTERNS[k] for k in r["signal"]["ids"]) + '</div></div>',
