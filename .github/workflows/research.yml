@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_filters.py", ".github/workflows/research.yml"]
+    paths: ["tools/research_filters.py", "tools/research_stocks.py", ".github/workflows/research.yml"]
 
 permissions:
   contents: write
@@ -28,6 +28,11 @@ jobs:
           mkdir -p research
           set -o pipefail
           python tools/research_filters.py 2>&1 | tee research/filters_log.txt
+        continue-on-error: true
+      - name: 個股 vs ETF 研究
+        run: |
+          set -o pipefail
+          python tools/research_stocks.py 2>&1 | tee research/stocks_log.txt
         continue-on-error: true
       - name: 停損距離研究
         run: |
