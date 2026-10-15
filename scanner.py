@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
 import engine as E
+from sectors import peers_of
 
 TOP_N = 10        # 可進場最多列幾檔
 WATCH_N = 10      # 「等待中、最接近觸發」最多列幾檔
@@ -74,18 +75,41 @@ def fetch_batch(stocks: list[dict], years: int = 5) -> dict:
     return out
 
 
+def sector_context(stocks: list[dict], prices: dict) -> dict:
+    """族群強弱（測試中）：每檔股票的族群指數。回傳 {code: (族群指數 Series 或 None, 族群名稱)}。
+
+    同業定義用 sectors.peers_of（與股票系統 App 相同）；同業不在這次清單裡的，另外批次補抓收盤價。
+    """
+    closes = {c: p[0]["close"] for c, p in prices.items() if p and p[0] is not None}
+    need, peers = {}, {}
+    for s_ in stocks:
+        name, ps = peers_of(s_["code"])
+        peers[s_["code"]] = (name, ps)
+        for x in ps:
+            if x["code"] not in closes:
+                need[x["code"]] = x
+    if need:
+        closes.update(E.fetch_closes(list(need.values())))
+    out = {}
+    for code, (name, ps) in peers.items():
+        idx = E.sector_index([closes.get(x["code"]) for x in ps]) if ps else None
+        out[code] = (idx, name or "")
+    return out
+
+
 # ------------------------------------------------------------------
 # 分析
 # ------------------------------------------------------------------
-def analyze_one(stock: dict, price_res, params: dict, market) -> dict:
-    """單檔分析；任何錯誤都只影響這一檔。"""
+def analyze_one(stock: dict, price_res, params: dict, market, mkt=None, sec_ctx=None) -> dict:
+    """單檔分析；任何錯誤都只影響這一檔。mkt：加權指數收盤序列；sec_ctx：(族群指數, 族群名稱)。"""
     row = {**stock, "decision": "資料失敗", "r": None, "src": None, "error": ""}
     df, src, errs = price_res if price_res else (None, None, ["未抓取"])
     if df is None:
         row["error"] = "；".join(errs) or "抓不到歷史資料"
         return row
     try:
-        r = E.Analyzer(df, stock["code"], params).report(market)
+        sec, sec_name = sec_ctx if sec_ctx else (None, "")
+        r = E.Analyzer(df, stock["code"], params, mkt=mkt, sec=sec, sec_name=sec_name).report(market)
     except Exception as e:  # noqa: BLE001
         row["error"] = f"分析失敗：{e}"
         return row
@@ -117,7 +141,7 @@ def trigger_gap(row) -> float | None:
 
 
 def classify(rows: list[dict]) -> dict:
-    picks = sorted([x for x in rows if x["decision"] == "可進場"], key=sort_key)
+    picks = sorted([x for x in rows if x["decision"].startswith("可進場")], key=sort_key)
     watch = [x for x in rows if x["decision"] == "等待" and trigger_gap(x) is not None]
     watch.sort(key=lambda x: (trigger_gap(x), -x["r"]["fit"]))
     return {
@@ -125,7 +149,7 @@ def classify(rows: list[dict]) -> dict:
         "picks_total": len(picks),
         "watch": watch[:WATCH_N],
         "wait_n": sum(x["decision"] == "等待" for x in rows),
-        "veto_n": sum(x["decision"] == "不可進場" for x in rows),
+        "veto_n": sum(x["decision"] in ("不可進場", "不適合本策略") for x in rows),
         "fail": [x for x in rows if x["decision"] == "資料失敗"],
     }
 
@@ -138,7 +162,7 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
     out = []
     for x in rows:
         r = x["r"] or {}
-        pl = r.get("plan") if r.get("decision") == "可進場" else None
+        pl = r.get("plan") if str(r.get("decision", "")).startswith("可進場") else None
         st_ = r.get("stats") or {}
         trig = r.get("trigger") or {}
         out.append({
@@ -152,7 +176,9 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
             "回測樣本": st_.get("n"),
             "回測勝率%": round(st_["tp_rate"], 1) if st_.get("n", 0) >= MIN_SAMPLES else None,
             "符合度%": round(r["fit"]) if r else None,
-            "觸發價": trig.get("price") if r.get("decision") != "可進場" else None,
+            "觸發價": trig.get("price") if not pl else None,
+            "買點": (r.get("signal") or {}).get("type") if pl else None,
+            "過濾（測試中）": "；".join((r.get("filters") or {}).get("info", [])),
             "主要原因": "；".join(r.get("why", [])[:2]) or x.get("error", ""),
             "淨利目標%": params.get("target_net"), "最長持有日": params.get("hold_days"),
             "資料來源": x.get("src") or "",

@@ -19,8 +19,9 @@ def run(sector, market):
     stocks = stocks_of(sector)
     t0 = time.time()
     prices = S.fetch_batch(stocks)
+    ctx = S.sector_context(stocks, prices)
     t1 = time.time()
-    rows = [S.analyze_one(s, prices.get(s["code"]), {}, market) for s in stocks]
+    rows = [S.analyze_one(s, prices.get(s["code"]), {}, market, MKT, ctx.get(s["code"])) for s in stocks]
     t2 = time.time()
     res = S.classify(rows)
 
@@ -33,6 +34,8 @@ def run(sector, market):
         df, src = (p[0], p[1]) if p else (None, None)
         info = f"{len(df)} 根 {df.index[0]:%Y-%m-%d}～{df.index[-1]:%Y-%m-%d} 收 {df['close'].iloc[-1]:.2f}" if df is not None else x["error"]
         why = ("；".join(x["r"]["why"][:1]) if x["r"] and x["r"]["why"] else "")
+        if x["r"]:
+            why += "｜" + "；".join(x["r"]["filters"]["info"])
         print(f"{x['code']:>6} {x['name']:<8} {x['decision']:<5} {src or '':<26} {info}  {why}")
     print("\n== 可進場 ==")
     for no, x in enumerate(res["picks"], 1):
@@ -44,7 +47,8 @@ def run(sector, market):
         print(f"{x['code']} {x['name']} 收 {x['r']['close']} 觸發 {x['r']['trigger']['price']} 差 {S.trigger_gap(x):+.1f}%")
 
 
-market = E.market_env()
+MKT = E.load_index(5)
+market = E.market_env(MKT)
 for sec in ([sys.argv[1]] if len(sys.argv) > 1 else list(SECTORS)):
     run(sec, market)
     print("\n" + "=" * 70 + "\n")

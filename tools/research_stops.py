@@ -25,7 +25,7 @@ for code, (df, src, err) in prices.items():
     if df is None or len(df) < 80:
         continue
     try:
-        an = E.Analyzer(df, code, {})
+        an = E.Analyzer(df, code, {"f_stop_atr": False, "f_market": False, "f_sector": False})  # 全關＝V1.2 規則
         bt = an.backtest()
     except Exception:  # noqa: BLE001
         continue

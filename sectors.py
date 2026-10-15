@@ -174,6 +174,30 @@ def stocks_of(sector: str):
     return out
 
 
+def peers_of(code: str):
+    """族群強弱用的同業（不含自己）。回傳 (族群名稱, [{"code","name","market"}])。
+
+    先找第一個（非 ETF）產業中所屬子類；子類同業 ≥ 3 檔就用子類，否則用整個產業。
+    ETF 或不在清單內 → (None, [])，族群強弱顯示「無法判定」、不套用。
+    """
+    code = str(code).upper()
+    if code.startswith("00"):
+        return None, []
+    for sec, groups in SECTORS.items():
+        if sec.startswith("ETF"):
+            continue
+        for g, items in groups.items():
+            if not any(c == code for c, _, _ in items):
+                continue
+            same = [{"code": c, "name": n, "market": m} for c, n, m in items if c != code]
+            if len(same) >= 3:
+                return g, same
+            allp = [{"code": s["code"], "name": s["name"], "market": s["market"]}
+                    for s in stocks_of(sec) if s["code"] != code]
+            return sec, allp
+    return None, []
+
+
 def parse_csv(file) -> list[dict]:
     """
     讀使用者上傳的自訂清單。必要欄位：代號（或代碼）、名稱；選填：分類（或子類）、市場（TW/TWO，預設 TW）。

@@ -35,8 +35,11 @@ for rec in book.to_dict("records"):
         stocks[c] = {"code": c, "name": rec["名稱"], "market": "TW", "group": rec["子類"]}
 
 prices = S.fetch_batch(list(stocks.values()))
-market = E.market_env()
-rows = [S.analyze_one(s, prices.get(c), {}, market) for c, s in stocks.items() if c in sector_of]
+mkt = E.load_index(5)
+market = E.market_env(mkt)
+scan = [s for c, s in stocks.items() if c in sector_of]
+ctx = S.sector_context(scan, prices)
+rows = [S.analyze_one(s, prices.get(s["code"]), {}, market, mkt, ctx.get(s["code"])) for s in scan]
 
 book = R.evaluate(book, prices, today)          # 先更新舊紀錄
 book, added = R.add_signals(book, rows, sector_of, market)  # 再加今天的新訊號

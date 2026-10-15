@@ -1,7 +1,10 @@
-name: 規則研究（手動）
+name: 規則研究
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["tools/research_filters.py", ".github/workflows/research.yml"]
 
 permissions:
   contents: write
@@ -13,13 +16,14 @@ concurrency:
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      - run: python tools/research_filters.py
       - run: python tools/research_stops.py
       - name: 保存結果
         run: |

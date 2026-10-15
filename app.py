@@ -57,7 +57,9 @@ def get_prices(stock_key):
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def get_market():
-    return E.market_env()
+    """回傳 (加權指數 5 年收盤序列, 大盤環境 dict)。"""
+    idx = E.load_index(5)
+    return idx, E.market_env(idx)
 
 
 price, money = RV.price, RV.money
@@ -103,12 +105,16 @@ with st.form("q"):
         hold = c2.selectbox("最長持有（交易日）", [15, 10, 5])
         discount = c1.number_input("手續費折扣（6 折填 0.6）", 0.1, 1.0, 1.0, 0.05)
         min_rr = c2.number_input("最低風險報酬比", 0.5, 3.0, 1.0, 0.1)
+        st.markdown("**三項過濾（測試中）**")
+        f1 = st.checkbox("停損距離至少 1 倍 ATR（太近不進場）", value=E.DEFAULT_PARAMS["f_stop_atr"])
+        f2 = st.checkbox("大盤空頭時股數減半", value=E.DEFAULT_PARAMS["f_market"])
+        f3 = st.checkbox("族群明顯弱於大盤時等待", value=E.DEFAULT_PARAMS["f_sector"])
         csv = st.file_uploader("自訂清單 CSV（選填，上傳後改掃這份清單）：欄位 代號,名稱,分類,市場（TW/TWO）",
                                type=["csv"])
     go = st.form_submit_button("掃描", type="primary", use_container_width=True)
 
 params = {"capital": capital, "max_loss": max_loss, "target_net": target, "hold_days": hold,
-          "fee_discount": discount, "min_rr": min_rr}
+          "fee_discount": discount, "min_rr": min_rr, "f_stop_atr": f1, "f_market": f2, "f_sector": f3}
 
 if go:
     if csv is not None:
@@ -145,12 +151,13 @@ key = (sector, stock_key, ptuple, dt.datetime.now().strftime("%Y%m%d%H"))
 if st.session_state.get("scan_key") != key:
     with st.spinner(f"抓取 {len(stocks)} 檔歷史股價…"):
         prices = get_prices(stock_key)
-        market = get_market()
+        mkt, market = get_market()
+        ctx = S.sector_context(stocks, prices)
     bar = st.progress(0.0, text="套用股票系統規則中…")
     rows = []
     for k, s in enumerate(stocks):
         bar.progress((k + 1) / len(stocks), text=f"分析 {s['code']} {s['name']}（{k + 1}/{len(stocks)}）")
-        rows.append(S.analyze_one(s, prices.get(s["code"]), params, market))
+        rows.append(S.analyze_one(s, prices.get(s["code"]), params, market, mkt, ctx.get(s["code"])))
     bar.empty()
     st.session_state.update(scan_key=key, rows=rows, prices=prices, market=market)
 
@@ -189,23 +196,26 @@ else:
         st.caption(f"共 {res['picks_total']} 檔可進場，依排序規則只列前 {S.TOP_N} 檔。")
     for no, x in enumerate(picks, 1):
         r, pl = x["r"], x["r"]["plan"]
-        early = "・空頭中早期買點，部位已減半" if r["early"] else ""
+        early = ("・股數已減半（" + "、".join(h.split("（")[0] for h in pl["halve"]) + "）") if pl.get("halve") else ""
+        sg = r["signal"]
+        tag = "、".join(E.PATTERNS[k] for k in sg["ids"]) if sg["ids"] else sg.get("note", "")
+        buy = ("限價掛單" if sg.get("mode") == "limit" else "買進約")
         st.markdown(
             f'<div class="pick"><div class="t">#{no}　{x["code"]} {x["name"]}　'
             f'<span class="g">{x["group"]}</span></div>'
-            f'<div class="row">收盤 {price(r["close"])}（{r["chg"]:+.2f}%）・買進約 <b>{price(pl["entry"])}</b>'
+            f'<div class="row">收盤 {price(r["close"])}（{r["chg"]:+.2f}%）・{buy} <b>{price(pl["entry"])}</b>'
             f'・停利 <b>{price(pl["tp3"])}</b>・停損 <b>{price(pl["stop"])}</b></div>'
             f'<div class="row">風報比 <b>{pl["rr"]:.2f}</b>・回測勝率 {win_text(r)}・符合度 {r["fit"]:.0f}%</div>'
             f'<div class="m">同子類合併回測：{pool_text(S.pooled_stats(rows, x["group"]))}</div>'
             f'<div class="m">{qty_text(pl["shares"])}（約 {money(pl["cost"])} 元，最大損失約 {money(pl["max_loss"])} 元）'
-            f'{early}・{r["signal"]["type"]}・'
-            + "、".join(E.PATTERNS[k] for k in r["signal"]["ids"]) + '</div></div>',
+            f'{early}・{sg["type"]}・{tag}</div>'
+            f'<div class="m">過濾（測試中）：{"；".join(r["filters"]["info"]) or "—"}</div></div>',
             unsafe_allow_html=True)
     if len(picks) > 1:
         st.warning("這些股票都屬同一個產業鏈，股價常同漲同跌。同時買多檔不等於分散風險；"
                    "「每檔最大損失」是每檔各自計算，全部停損時的總損失會加總。")
     st.caption("排序：① 風險報酬比 ② 回測勝率（樣本 ≥ 10 筆才採用）③ 規則符合度。"
-               "買進價為今日收盤價，明日開盤若高於此價 1% 以上不追。")
+               "收盤型買點：明日開盤高於買進價 1% 以上不追；掛單型買點：3 個交易日內有效。")
 
 # ---------------- 等待中、最接近觸發 ----------------
 st.markdown("#### ⏳ 等待中、最接近觸發（不是買點）")
@@ -267,6 +277,7 @@ if st.button("重新掃描（忽略快取）"):
     st.session_state.pop("scan_key", None)
     st.rerun()
 
-st.markdown(f'<div class="small">引擎 {E.ENGINE_VERSION}・產業清單為自訂分類（sectors.py），非官方分類。'
+flt = "、".join(f"{v[0]}{'（開）' if params.get(k) else '（關）'}" for k, v in E.FILTERS.items())
+st.markdown(f'<div class="small">引擎 {E.ENGINE_VERSION}・三項過濾（測試中）：{flt}・產業清單為自訂分類（sectors.py），非官方分類。'
             '未納入進場判斷：個股法人籌碼、財報事件、週K。研究用途，不是投資建議或下單指令。</div>',
             unsafe_allow_html=True)

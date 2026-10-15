@@ -1,5 +1,5 @@
 """
-單檔完整報告（畫面）。內容與「股票系統」App 的單檔分析頁相同，只是包成函式給掃描結果呼叫。
+單檔完整報告（畫面）。股票系統 App 與產業掃描 App 共用同一份（兩個倉庫的 report_view.py 要保持相同）。
 不含交易邏輯；所有判斷都來自 engine.Analyzer.report()。
 """
 import pandas as pd
@@ -20,14 +20,18 @@ def render_report(r, an, df, src, target, hold, title=None):
     code = title or r["code"]
     # ---------------- 標頭 ----------------
     st.markdown(f"**{code}**　收盤 **{price(r['close'])}**（{r['chg']:+.2f}%）・量 {money(r['volume'])} 張・{r['date']}")
-    st.caption(f"資料：{src}・{len(df)} 根日K（{df.index[0]:%Y-%m-%d} 起）")
+    st.caption(f"資料：{src}・{len(df)} 根日K（{df.index[0]:%Y-%m-%d} 起）"
+               + (f"・股性 ATR {r['atrp']:.1f}%（本策略適用 {E.TH['atr_min']}～{E.TH['atr_max']}%）"
+                  if r.get("atrp") else ""))
     if r["stale_days"] > 5:
         st.warning(f"最新資料距今 {r['stale_days']} 天，可能不是最新行情。")
 
     # ---------------- 結論 ----------------
     color = {"green": "v-green", "orange": "v-orange", "red": "v-red"}[r["color"]]
-    if r["decision"] == "可進場":
-        sub = f"{r['signal']['type']}・型態：" + "、".join(E.PATTERNS[k] for k in r["signal"]["ids"])
+    if r["decision"].startswith("可進場"):
+        sg = r["signal"]
+        sub = sg["type"] + "・" + ("型態：" + "、".join(E.PATTERNS[k] for k in sg["ids"]) if sg["ids"]
+                                   else sg.get("note", ""))
     elif r["why"]:
         sub = "；".join(r["why"][:2])
     else:
@@ -54,15 +58,28 @@ def render_report(r, an, df, src, target, hold, title=None):
         st.caption(f"回測平均每筆淨報酬 {s['avg']:+.2f}%・平均獲利 {s['avg_win']:+.2f}%／平均虧損 {s['avg_loss']:+.2f}%"
                    f"・最多連虧 {s['max_streak']} 筆・平均持有 {s['avg_days']:.1f} 天")
 
+    # ---------------- 三項過濾（測試中）----------------
+    f = r.get("filters") or {}
+    flags = r.get("filter_flags") or {}
+    if f:
+        on = [v[0] for k, v in E.FILTERS.items() if flags.get(k)]
+        st.caption("🧪 過濾（測試中）："
+                   + ("；".join(f.get("info", [])) or "無資料")
+                   + (f"。啟用：{'、'.join(on)}" if on else "。三項過濾都已關閉"))
+
     # ---------------- 交易計畫 / 下一步 ----------------
     pl = r["plan"]
-    if r["decision"] == "可進場" and pl:
+    if r["decision"].startswith("可進場") and pl:
         st.markdown("#### 交易計畫")
         lots, odd = divmod(pl["shares"], 1000)
         qty = (f"{lots} 張" if lots else "") + (f" {odd} 股" if odd else "") or "0 股"
+        half = ("・已減半：" + "、".join(pl["halve"])) if pl.get("halve") else ""
         rows = [
-            ("買進價", f"約 {price(pl['entry'])}（明日開盤若高於此價 1% 以上不追）"),
-            ("買進數量", f"{qty}（約 {money(pl['cost'])} 元）" + ("・空頭結構中的早期買點，已減半" if r["early"] else "")),
+            (("限價掛單", f"{price(pl['entry'])}（{r['signal'].get('days_left', 3)} 個交易日內有效；開盤低於此價就以開盤價成交；"
+                          f"未成交前收盤跌破 {price(pl['stop'])} 就取消）")
+             if r["signal"].get("mode") == "limit" else
+             ("買進價", f"約 {price(pl['entry'])}（明日開盤高於 {price(E.round_up(pl['entry'] * 1.01, r['etf']))} 就不追）")),
+            ("買進數量", f"{qty}（約 {money(pl['cost'])} 元）{half}"),
             ("停利", f"{price(pl['tp3'])}（淨 +{target:g}% 全出）；遇壓力可改 {price(pl['tp2'])}（淨 +2%）"),
             ("停損", f"{price(pl['stop'])}（碰到即出，建議設觸價停損單；淨 {pl['loss_pct']:.2f}%）"),
             ("最大損失", f"約 {money(pl['max_loss'])} 元"),
@@ -106,21 +123,27 @@ def render_report(r, an, df, src, target, hold, title=None):
                 st.markdown(f"- {d}　**#{h['id']} {h['name']}**：{h['note']}")
         else:
             st.write("近 10 日沒有自動判定到的型態。")
-        st.caption("#13 雙盤底、#14 雙弧底、#16 突破ABC 尚未自動化，請人工看圖。量化門檻為 V0.1（測試中）。")
+        st.caption("#13 雙盤底、#14 雙弧底、#16 突破ABC 尚未自動化，請人工看圖。量化門檻為測試中。")
 
     # ---------------- 回測 ----------------
     with st.expander("回測明細"):
+        fn = r.get("funnel") or {}
+        if fn.get("出現訊號"):
+            st.markdown("**訊號漏斗**（每一關擋掉幾次）")
+            st.table(pd.DataFrame([(k, v) for k, v in fn.items() if v or k in ("出現訊號", "成交")],
+                                  columns=["關卡", "次數"]).set_index("關卡"))
         bt = r["bt"]
         if bt is None or bt.empty:
             st.write("本股資料期間內沒有符合規則的歷史進場。")
         else:
             st.write(f"期間 {s['first']} ～ {s['last']}，共 {s['n']} 筆；先停利 {s['tp_rate']:.0f}%、"
                      f"先停損 {s['sl_rate']:.0f}%、淨報酬為正 {s['win_rate']:.0f}%；最大不利波動 {s['worst_mae']:.1f}%。")
-            st.dataframe(bt[["訊號日", "進場價", "停損", "停利", "出場日", "結果", "淨報酬%", "持有天數", "型態"]]
-                         .iloc[::-1], hide_index=True, use_container_width=True)
-        st.caption("方法：每天收盤後判斷訊號 → 隔日開盤進場 → 逐日檢查，同一天同時碰到停損與停利時先算停損；"
-                   "跳空跌破停損以開盤價計算；持有期滿以收盤出場。已扣手續費與證交稅，未含滑價。"
-                   "過去結果不保證未來。")
+            cols = [c for c in ["訊號日", "買點", "進場價", "停損", "停利", "出場日", "結果", "淨報酬%", "持有天數",
+                                "停損/ATR", "大盤", "型態"] if c in bt.columns]
+            st.dataframe(bt[cols].iloc[::-1], hide_index=True, use_container_width=True)
+        st.caption("方法：每天收盤後判斷訊號。收盤型買點隔日開盤進場，開盤高於前收 1% 不追、漲停鎖死買不到；"
+                   "掛單型買點 3 個交易日內觸價成交，成交當天只算停損不算停利。逐日檢查，同一天同時碰到停損與停利先算停損；"
+                   "跳空跌破停損以開盤價計算；持有期滿以收盤出場。已扣手續費與證交稅，未含滑價。過去結果不保證未來。")
 
     # ---------------- K 線圖 ----------------
     try:
@@ -137,7 +160,7 @@ def render_report(r, an, df, src, target, hold, title=None):
                                      name=col.upper()), row=1, col=1)
         vc = ["#e53935" if c >= o else "#2e9d5b" for c, o in zip(d["close"], d["open"])]
         fig.add_trace(go.Bar(x=d.index, y=d["volume"], marker_color=vc, name="量"), row=2, col=1)
-        if pl:
+        if pl and r["decision"].startswith("可進場"):
             for y, clr, nm in ((pl["tp3"], "#e53935", "停利"), (pl["stop"], "#2e9d5b", "停損")):
                 fig.add_hline(y=y, line_dash="dot", line_color=clr, annotation_text=nm, row=1, col=1)
         fig.update_layout(height=420, margin=dict(l=8, r=8, t=8, b=8), showlegend=False,
@@ -146,4 +169,3 @@ def render_report(r, an, df, src, target, hold, title=None):
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
     except Exception:  # noqa: BLE001
         st.line_chart(an.df["close"].iloc[-120:])
-
