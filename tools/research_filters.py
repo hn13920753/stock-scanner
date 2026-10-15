@@ -110,7 +110,8 @@ if len(base):
                 out.append("      " + line(nm, part))
 
     out.append("\n== 四、③族群強弱：依族群 20 日相對大盤（百分點，全關版本、只含個股）==")
-    st_ = base[~base["ETF"]].copy()
+    st_ = base[~base["ETF"].astype(bool)].copy()
+    st_["族群RS"] = pd.to_numeric(st_["族群RS"], errors="coerce")
     st_["族群分組"] = pd.cut(st_["族群RS"], [-1e9, -6, -3, 0, 3, 6, 1e9],
                          labels=["< -6", "-6 ~ -3", "-3 ~ 0", "0 ~ 3", "3 ~ 6", "> 6"])
     for k, g in st_.groupby("族群分組", observed=True):
@@ -125,6 +126,7 @@ if len(base):
 
     out.append("\n== 五、①停損距離 ÷ ATR（全關版本）==")
     b2 = base.copy()
+    b2["停損/ATR"] = pd.to_numeric(b2["停損/ATR"], errors="coerce")
     b2["分組"] = pd.cut(b2["停損/ATR"], [0, 0.5, 1, 1.5, 2, 3, 100], labels=["<0.5", "0.5~1", "1~1.5", "1.5~2", "2~3", ">3"])
     for k, g in b2.groupby("分組", observed=True):
         out.append("  " + line(str(k), g))

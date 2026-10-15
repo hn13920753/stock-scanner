@@ -298,6 +298,7 @@ def sector_index(closes: list) -> pd.Series | None:
     cs = [x for x in closes if x is not None and len(x) >= 60]
     if len(cs) < TH["rs_min_peers"]:
         return None
+    cs = [x[~x.index.duplicated(keep="last")].sort_index() for x in cs]
     ret = pd.concat([x.pct_change() for x in cs], axis=1)
     cnt = ret.notna().sum(axis=1)
     avg = ret.mean(axis=1).where(cnt >= TH["rs_min_peers"])
