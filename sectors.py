@@ -177,14 +177,15 @@ def stocks_of(sector: str):
 def peers_of(code: str):
     """族群強弱用的同業（不含自己）。回傳 (族群名稱, [{"code","name","market"}])。
 
-    先找第一個（非 ETF）產業中所屬子類；子類同業 ≥ 3 檔就用子類，否則用整個產業。
-    ETF 或不在清單內 → (None, [])，族群強弱顯示「無法判定」、不套用。
+    先找第一個產業中所屬子類；子類同業 ≥ 3 檔就用子類，否則用整個產業。
+    「ETF」與「⭐ 自選股」不是產業分類，不拿來當族群。
+    ETF 或不在產業清單內 → (None, [])，族群強弱顯示「無法判定」、不套用。
     """
     code = str(code).upper()
     if code.startswith("00"):
         return None, []
     for sec, groups in SECTORS.items():
-        if sec.startswith("ETF"):
+        if sec.startswith(("ETF", "⭐")):
             continue
         for g, items in groups.items():
             if not any(c == code for c, _, _ in items):
