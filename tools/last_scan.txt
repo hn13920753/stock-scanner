@@ -5,7 +5,7 @@ $1815.TW: No data found, symbol may be delisted
 ['1815.TW']: No data found, symbol may be delisted
 HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1815.TW"}}}
 $1815.TW: No data found, symbol may be delisted
-產業：⭐ 自選股　共 23 檔　抓資料 7 秒・分析 6 秒
+產業：⭐ 自選股　共 23 檔　抓資料 5 秒・分析 6 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 8・不可進場 15・資料失敗 0
 
@@ -48,7 +48,7 @@ $1815.TW: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：AI 產業　共 40 檔　抓資料 3 秒・分析 11 秒
+產業：AI 產業　共 40 檔　抓資料 2 秒・分析 11 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 13・不可進場 27・資料失敗 0
 
@@ -114,10 +114,10 @@ $00888.TW: No data found, symbol may be delisted
 
 2 Failed downloads:
 ['00928.TW', '00888.TW']: No data found, symbol may be delisted
-$00928.TW: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
-$00408A.TWO: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
 $00410A.TWO: No data found, symbol may be delisted
+$00408A.TWO: No data found, symbol may be delisted
 
 產業：半導體　共 14 檔　抓資料 1 秒・分析 4 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
@@ -151,7 +151,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：PCB／載板　共 6 檔　抓資料 1 秒・分析 2 秒
+產業：PCB／載板　共 6 檔　抓資料 0 秒・分析 2 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 0・不可進場 6・資料失敗 0
 
@@ -169,7 +169,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：散熱／電源　共 6 檔　抓資料 3 秒・分析 2 秒
+產業：散熱／電源　共 6 檔　抓資料 2 秒・分析 2 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 2・不可進場 4・資料失敗 0
 
@@ -189,7 +189,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・台股　共 86 檔　抓資料 18 秒・分析 15 秒
+產業：ETF・台股　共 86 檔　抓資料 17 秒・分析 15 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 55・不可進場 28・資料失敗 3
 
@@ -240,18 +240,18 @@ $00410A.TWO: No data found, symbol may be delisted
  00930 永豐ESG低碳高息 不適合本策略 Yahoo Finance（00930.TW）    789 根 2023-07-13～2026-10-13 收 23.69  股性波動過小（ATR 1.0% < 1.2%），15 日內不易達 3%｜族群強弱：ETF 不適用
  00936 台新永續高息中小 不適合本策略 Yahoo Finance（00936.TW）    709 根 2023-11-08～2026-10-13 收 21.58  股性波動過小（ATR 1.0% < 1.2%），15 日內不易達 3%｜族群強弱：ETF 不適用
  00907 永豐優息存股   不適合本策略 Yahoo Finance（00907.TW）    1065 根 2022-05-25～2026-10-13 收 18.28  股性波動過小（ATR 1.1% < 1.2%），15 日內不易達 3%｜停損距離 0.96 倍 ATR；族群強弱：ETF 不適用
- 00932 兆豐永續高息等權 不適合本策略 Yahoo Finance（00932.TW）    754 根 2023-09-01～2026-10-13 收 17.84  股性波動過小（ATR 0.7% < 1.2%），15 日內不易達 3%｜停損距離 1.01 倍 ATR；族群強弱：ETF 不適用$00955.TW: No data found, symbol may be delisted
-$009823.TW: No data found, symbol may be delisted
-$009815.TW: No data found, symbol may be delisted
-
-3 Failed downloads:
-['00955.TW', '009823.TW', '009815.TW']: No data found, symbol may be delisted
-$009823.TW: No data found, symbol may be delisted
+ 00932 兆豐永續高息等權 不適合本策略 Yahoo Finance（00932.TW）    754 根 2023-09-01～2026-10-13 收 17.84  股性波動過小（ATR 0.7% < 1.2%），15 日內不易達 3%｜停損距離 1.01 倍 ATR；族群強弱：ETF 不適用$009823.TW: No data found, symbol may be delisted
 $009815.TW: No data found, symbol may be delisted
 $00955.TW: No data found, symbol may be delisted
+
+3 Failed downloads:
+['009823.TW', '009815.TW', '00955.TW']: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
 $009826.TWO: No data found, symbol may be delisted
-$00409A.TWO: No data found, symbol may be delisted
 $009828.TWO: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
 
  00730 富邦臺灣優質高息 不可進場  Yahoo Finance（00730.TW）    1210 根 2021-10-15～2026-10-13 收 29.55  高檔衰退警報：價漲量縮、KD 高檔死叉、MACD 柱狀體連續縮短｜族群強弱：ETF 不適用
  00962 台新AI優息動能 等待    Yahoo Finance（00962.TW）    448 根 2024-12-06～2026-10-13 收 15.08  ｜族群強弱：ETF 不適用
@@ -309,7 +309,7 @@ $009828.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・國際　共 30 檔　抓資料 12 秒・分析 4 秒
+產業：ETF・國際　共 30 檔　抓資料 15 秒・分析 4 秒
 大盤：{'state': '多頭', 'score': 1.0, 'close': 48625.828125, 'ma20': 47985.86875, 'ma60': 45932.4720703125, 'date': '2026-10-14'}
 可進場 0・等待 11・不可進場 14・資料失敗 5
 
