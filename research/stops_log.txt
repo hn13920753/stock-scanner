@@ -1,0 +1,65 @@
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009815.TW"}}}
+$009815.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1815.TW"}}}
+$1815.TW: No data found, symbol may be delisted
+$00888.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+
+6 Failed downloads:
+['009815.TW', '1815.TW', '00888.TW', '00928.TW', '00955.TW', '009823.TW']: No data found, symbol may be delisted
+$00888.TW: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
+$00408A.TWO: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
+$00410A.TWO: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+$009826.TWO: No data found, symbol may be delisted
+$009828.TWO: No data found, symbol may be delisted
+樣本：141 檔、1387 筆歷史訊號（2022-01-24～2026-09-16）
+整體：先到停利 32.9%・停損 65.0%・期滿 2.1%・平均淨報酬 -0.16%・中位數停損距離 1.48%
+
+== 依停損距離（進場價到停損的 %）==
+         筆數  先到停利%    停損%  平均淨報酬%  平均持有天
+停損距離%                                   
+<0.5%    84   9.52  90.48   -0.30   1.54
+0.5~1%  205  34.15  65.37    0.31   3.48
+1~2%    731  34.06  63.89   -0.24   4.18
+2~3%    309  39.16  56.96   -0.26   3.58
+3~5%     11  72.73  18.18    1.57   6.91
+>5%       0    NaN    NaN     NaN    NaN
+
+== 依停損距離 ÷ ATR14（停損寬度相對於每日正常波動）==
+         筆數  先到停利%    停損%  平均淨報酬%  平均持有天
+停損/ATR                                  
+<0.5    259  25.87  74.13    0.01   2.26
+0.5~1   877  35.35  63.40   -0.22   3.69
+1~1.5   143  34.27  58.74   -0.28   5.80
+1.5~2    49  44.90  40.82    0.39   6.98
+2~3      12  66.67  25.00    1.27   7.42
+>3        0    NaN    NaN     NaN    NaN
+
+== 股票 vs ETF ==
+個股：446 筆・先到停利 30.7%・平均淨報酬 -0.57%・中位數停損距離 1.94%
+ETF：941 筆・先到停利 33.9%・平均淨報酬 +0.04%・中位數停損距離 1.29%
+
+== 依買點類型 ==
+回測確認買：126 筆・先到停利 42.1%・平均淨報酬 +0.16%
+多頭回檔掛單：45 筆・先到停利 17.8%・平均淨報酬 -0.88%
+多頭回檔買上漲：15 筆・先到停利 40.0%・平均淨報酬 -0.19%
+拉回限價買：808 筆・先到停利 31.8%・平均淨報酬 -0.22%
+突破收盤買：393 筆・先到停利 33.6%・平均淨報酬 -0.05%
+
+== 樣本外檢查：停損 ≥ 1×ATR 過濾（只統計，未改規則）==
+[前段 ~2024]
+  全部訊號（現行）：678 筆・先到停利 32.2%・平均淨報酬 -0.22%・總和 -146.8%
+  停損 ≥ 1 ATR：100 筆・先到停利 41.0%・平均淨報酬 +0.25%・總和 +25.5%
+  停損 < 1 ATR：578 筆・先到停利 30.6%・平均淨報酬 -0.30%・總和 -172.3%
+[後段 2025~]
+  全部訊號（現行）：709 筆・先到停利 33.6%・平均淨報酬 -0.10%・總和 -72.4%
+  停損 ≥ 1 ATR：104 筆・先到停利 36.5%・平均淨報酬 -0.30%・總和 -31.5%
+  停損 < 1 ATR：605 筆・先到停利 33.1%・平均淨報酬 -0.07%・總和 -40.9%
