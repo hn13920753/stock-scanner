@@ -23,10 +23,13 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: python tools/daily_record.py 2>&1 | tee records/last_run.txt
+      - name: 收盤後掃描（更新 last_scan.txt）
+        run: python tools/real_scan.py 2>&1 | tee tools/last_scan.txt
+        continue-on-error: true
       - name: 保存紀錄
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add records/
+          git add records/ tools/last_scan.txt
           git commit -m "每日進場紀錄 $(TZ=Asia/Taipei date +%F) [skip ci]" || exit 0
           git pull --rebase && git push
