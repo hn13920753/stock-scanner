@@ -30,7 +30,7 @@ for sec in SECTORS:
     for s in stocks_of(sec):
         stocks.setdefault(s["code"], s)
 prices = S.fetch_batch(list(stocks.values()))
-mkt = E.load_index(5)
+mkt = E.load_index(E.DATA_YEARS)
 ctx = S.sector_context(list(stocks.values()), prices)
 print(f"抓資料 {time.time() - t0:.0f} 秒；加權指數 {'OK' if mkt is not None else '失敗'}；"
       f"有族群指數 {sum(v[0] is not None for v in ctx.values())} 檔")

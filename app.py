@@ -57,8 +57,8 @@ def get_prices(stock_key):
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def get_market():
-    """回傳 (加權指數 5 年收盤序列, 大盤環境 dict)。"""
-    idx = E.load_index(5)
+    """回傳 (加權指數 10 年收盤序列, 大盤環境 dict)。"""
+    idx = E.load_index(E.DATA_YEARS)
     return idx, E.market_env(idx)
 
 

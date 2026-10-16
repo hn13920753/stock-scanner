@@ -30,7 +30,7 @@ for sec in SECTORS:
         if not E.is_etf(s["code"]):
             stocks.setdefault(s["code"], s)
 prices = S.fetch_batch(list(stocks.values()))
-mkt = E.load_index(5)
+mkt = E.load_index(E.DATA_YEARS)
 print(f"個股 {len(stocks)} 檔，抓資料 {time.time() - t0:.0f} 秒")
 
 BASE = {"f_stop_atr": True, "f_market": True, "f_sector": False}

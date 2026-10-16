@@ -1,7 +1,7 @@
 """
 產業掃描邏輯（不含畫面，可單獨測試）。
 
-流程：一次批次抓整個產業的 5 年日 K → 每檔丟進 engine.Analyzer（與股票系統完全相同的規則）
+流程：一次批次抓整個產業的 10 年日 K → 每檔丟進 engine.Analyzer（與股票系統完全相同的規則）
 → 依決策分成「可進場／等待／不可進場／資料失敗」→ 可進場依排序規則取前 N 檔。
 
 本檔不新增、不修改任何進出場判斷；判斷全部來自 engine.py。
@@ -41,7 +41,7 @@ def _from_yf_frame(h: pd.DataFrame):
     return h if len(h) >= 80 else None
 
 
-def fetch_batch(stocks: list[dict], years: int = 5) -> dict:
+def fetch_batch(stocks: list[dict], years: int = E.DATA_YEARS) -> dict:
     """回傳 {code: (df 或 None, 來源, 錯誤列表)}。"""
     out: dict = {}
     tickers = {s["code"]: f"{s['code']}.{s['market']}" for s in stocks}

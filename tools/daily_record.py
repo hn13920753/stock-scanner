@@ -35,7 +35,7 @@ for rec in book.to_dict("records"):
         stocks[c] = {"code": c, "name": rec["名稱"], "market": "TW", "group": rec["子類"]}
 
 prices = S.fetch_batch(list(stocks.values()))
-mkt = E.load_index(5)
+mkt = E.load_index(E.DATA_YEARS)
 market = E.market_env(mkt)
 scan = [s for c, s in stocks.items() if c in sector_of]
 ctx = S.sector_context(scan, prices)

@@ -47,7 +47,7 @@ def run(sector, market):
         print(f"{x['code']} {x['name']} 收 {x['r']['close']} 觸發 {x['r']['trigger']['price']} 差 {S.trigger_gap(x):+.1f}%")
 
 
-MKT = E.load_index(5)
+MKT = E.load_index(E.DATA_YEARS)
 market = E.market_env(MKT)
 for sec in ([sys.argv[1]] if len(sys.argv) > 1 else list(SECTORS)):
     run(sec, market)
