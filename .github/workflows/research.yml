@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_filters.py", "tools/research_stocks.py", "tools/research_years.py", ".github/workflows/research.yml"]
+    paths: ["tools/research_filters.py", "tools/research_stocks.py", "tools/research_years.py", "tools/research_macd.py", ".github/workflows/research.yml"]
 
 permissions:
   contents: write
@@ -43,6 +43,11 @@ jobs:
         run: |
           set -o pipefail
           python tools/research_stops.py 2>&1 | tee research/stops_log.txt
+        continue-on-error: true
+      - name: MACD 三關研究
+        run: |
+          set -o pipefail
+          python tools/research_macd.py 2>&1 | tee research/macd_log.txt
         continue-on-error: true
       - name: 保存結果
         if: always()
