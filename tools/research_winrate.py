@@ -303,7 +303,7 @@ try:
         fl.append("風險：" + "；".join(map(str, rep["cons"])))
         fl.append("衝突：" + "；".join(map(str, rep["conflicts"])))
         for mo in rep["modules"]:
-            fl.append(f"  模組{mo['no']:02d} {mo['name']}：{mo['score']}｜{mo['text']}")
+            fl.append(f"  模組{mo['no']} {mo['name']}：{mo['score']}｜{mo['text']}")
         fl.append(f"回測：{rep['stats']}")
         fl.append(f"近期型態：{rep['recent_hits']}")
         d = prep(df)
