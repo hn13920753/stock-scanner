@@ -1,28 +1,28 @@
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 4977.TWO"}}}
-$4977.TWO: No data found, symbol may be delisted
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1815.TW"}}}
-$4506.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 4772.TW"}}}
+$4772.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 7769.TWO"}}}
+$6005.TWO: No data found, symbol may be delisted
 $7769.TWO: No data found, symbol may be delisted
-$1815.TW: No data found, symbol may be delisted
-$6803.TW: No data found, symbol may be delisted
+$6213.TWO: No data found, symbol may be delisted
+$4977.TWO: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
 $3491.TW: No data found, symbol may be delisted
 $6146.TW: No data found, symbol may be delisted
-$6213.TWO: No data found, symbol may be delisted
 $8358.TW: No data found, symbol may be delisted
-$4772.TW: No data found, symbol may be delisted
-$6005.TWO: No data found, symbol may be delisted
 $8021.TWO: No data found, symbol may be delisted
+$6803.TW: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
 
 12 Failed downloads:
-['4977.TWO', '4506.TW', '7769.TWO', '1815.TW', '6803.TW', '3491.TW', '6146.TW', '6213.TWO', '8358.TW', '4772.TW', '6005.TWO', '8021.TWO']: No data found, symbol may be delisted
-$8358.TW: No data found, symbol may be delisted
+['4772.TW', '6005.TWO', '7769.TWO', '6213.TWO', '4977.TWO', '4506.TW', '3491.TW', '6146.TW', '8358.TW', '8021.TWO', '6803.TW', '1815.TW']: No data found, symbol may be delisted
 $1815.TW: No data found, symbol may be delisted
-$4772.TW: No data found, symbol may be delisted
+$8358.TW: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
 $3491.TW: No data found, symbol may be delisted
 $6146.TW: No data found, symbol may be delisted
-$4506.TW: No data found, symbol may be delisted
+$4772.TW: No data found, symbol may be delisted
 $6803.TW: No data found, symbol may be delisted
-產業：⭐ 主動交易觀察池・股票87　共 87 檔　抓資料 12 秒・分析 15 秒
+產業：⭐ 主動交易觀察池・股票87　共 87 檔　抓資料 15 秒・分析 17 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 40・不可進場 47・資料失敗 0
 
@@ -136,7 +136,7 @@ $1815.TW: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：⭐ 主動交易觀察池・ETF20已核碼　共 20 檔　抓資料 1 秒・分析 2 秒
+產業：⭐ 主動交易觀察池・ETF20已核碼　共 20 檔　抓資料 2 秒・分析 2 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 17・不可進場 3・資料失敗 0
 
@@ -178,7 +178,7 @@ $1815.TW: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：⭐ 自選股　共 23 檔　抓資料 3 秒・分析 4 秒
+產業：⭐ 自選股　共 23 檔　抓資料 5 秒・分析 5 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 5・不可進場 18・資料失敗 0
 
@@ -218,7 +218,7 @@ $1815.TW: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：AI 產業　共 40 檔　抓資料 2 秒・分析 7 秒
+產業：AI 產業　共 40 檔　抓資料 3 秒・分析 8 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 12・不可進場 28・資料失敗 0
 
@@ -280,20 +280,20 @@ $1815.TW: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：半導體　共 14 檔　抓資料 1 秒・分析 3 秒
+產業：半導體　共 14 檔　抓資料 2 秒・分析 3 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 4・不可進場 10・資料失敗 0
 
 == 每檔資料 ==
-  2330 台積電      等待    Yahoo Finance（2330.TW）     2429 根 2016-10-21～2026-10-21 收 2420.00  ｜IC 設計／晶圓代工 近 20 日比大盤 -0.5 個百分點$00928.TW: No data found, symbol may be delisted
-$00888.TW: No data found, symbol may be delisted
+  2330 台積電      等待    Yahoo Finance（2330.TW）     2429 根 2016-10-21～2026-10-21 收 2420.00  ｜IC 設計／晶圓代工 近 20 日比大盤 -0.5 個百分點$00888.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
 
 2 Failed downloads:
-['00928.TW', '00888.TW']: No data found, symbol may be delisted
+['00888.TW', '00928.TW']: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
 $00928.TW: No data found, symbol may be delisted
-$00408A.TWO: No data found, symbol may be delisted
 $00410A.TWO: No data found, symbol may be delisted
+$00408A.TWO: No data found, symbol may be delisted
 
   2303 聯電       不適合本策略 Yahoo Finance（2303.TW）     2428 根 2016-10-21～2026-10-21 收 128.00  股性波動過大（日均波動 ATR 4.9% > 4.5%），停損距離難以配合 3% 目標｜半導體 近 20 日比大盤 -3.0 個百分點
   2454 聯發科      不適合本策略 Yahoo Finance（2454.TW）     2429 根 2016-10-21～2026-10-21 收 4140.00  股性波動過大（日均波動 ATR 4.8% > 4.5%），停損距離難以配合 3% 目標｜IC 設計／晶圓代工 近 20 日比大盤 +1.7 個百分點
@@ -319,7 +319,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：PCB／載板　共 6 檔　抓資料 0 秒・分析 1 秒
+產業：PCB／載板　共 6 檔　抓資料 1 秒・分析 1 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 0・不可進場 6・資料失敗 0
 
@@ -337,7 +337,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：散熱／電源　共 6 檔　抓資料 2 秒・分析 1 秒
+產業：散熱／電源　共 6 檔　抓資料 3 秒・分析 1 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 2・不可進場 4・資料失敗 0
 
@@ -357,7 +357,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・台股　共 86 檔　抓資料 38 秒・分析 7 秒
+產業：ETF・台股　共 86 檔　抓資料 17 秒・分析 8 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 71・不可進場 13・資料失敗 2
 
@@ -422,10 +422,10 @@ $009815.TW: No data found, symbol may be delisted
 3 Failed downloads:
 ['009823.TW', '00955.TW', '009815.TW']: No data found, symbol may be delisted
 $009815.TW: No data found, symbol may be delisted
-$009823.TW: No data found, symbol may be delisted
 $00955.TW: No data found, symbol may be delisted
-$009826.TWO: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
 $009828.TWO: No data found, symbol may be delisted
+$009826.TWO: No data found, symbol may be delisted
 $00409A.TWO: No data found, symbol may be delisted
 
  00891 中信關鍵半導體  等待    Yahoo Finance（00891.TW）    1312 根 2021-05-28～2026-10-21 收 35.43  ｜族群強弱：ETF 不適用
@@ -477,7 +477,7 @@ $00409A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・國際　共 30 檔　抓資料 38 秒・分析 2 秒
+產業：ETF・國際　共 30 檔　抓資料 16 秒・分析 2 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 19・不可進場 8・資料失敗 3
 
