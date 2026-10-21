@@ -109,7 +109,7 @@ with st.form("q"):
         f1 = st.checkbox("停損距離至少 1 倍 ATR（太近不進場）", value=E.DEFAULT_PARAMS["f_stop_atr"])
         f2 = st.checkbox("大盤空頭時股數減半", value=E.DEFAULT_PARAMS["f_market"])
         f3 = st.checkbox("族群明顯弱於大盤時等待", value=E.DEFAULT_PARAMS["f_sector"])
-        f4 = st.checkbox("積極組：高波動個股改用小部位、寬停損、5% 停利（測試中）", value=E.DEFAULT_PARAMS["f_aggr"])
+        f4 = st.checkbox("積極組：高波動個股改用寬停損 2 ATR、淨利 8% 出場、固定最大損失（測試中・紙上交易驗證中）", value=E.DEFAULT_PARAMS["f_aggr"])
         aggr_loss = st.number_input("積極組單筆最大損失（元）", 1000, 1_000_000, E.DEFAULT_PARAMS["aggr_max_loss"], 1000)
         csv = st.file_uploader("自訂清單 CSV（選填，上傳後改掃這份清單）：欄位 代號,名稱,分類,市場（TW/TWO）",
                                type=["csv"])

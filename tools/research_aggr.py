@@ -10,10 +10,10 @@
 3. 比較：
    V1 只放寬股性（淨利 3%、結構停損、風報比 ≥ 1）＝「單純不排除高波動股」
    V2 淨利 5%、結構停損、風報比 ≥ 1
-   V3 淨利 5%、停損 ≥ 1.5 ATR、風報比 ≥ 0.5（引擎預設）
+   V3 淨利 5%、停損 ≥ 1.5 ATR、風報比 ≥ 0.5
    V4 淨利 5%、停損 ≥ 2 ATR、風報比 ≥ 0.3
    V5 淨利 3%、停損 ≥ 1.5 ATR、風報比 ≥ 0.3
-   V6 淨利 8%、停損 ≥ 2 ATR、風報比 ≥ 0.3
+   V6 淨利 8%、停損 ≥ 2 ATR、風報比 ≥ 0.3（2026-10-21 起引擎預設；唯一前後兩段都賺）
 4. 前段（~2024）／後段（2025~）分開看。已扣手續費與證交稅；另列「再扣滑價每邊 0.1%」。
 5. 金額：每筆最大損失 20,000 元、投入上限 300,000 元反推股數，算平均每筆賺賠多少元。
 """
@@ -44,12 +44,12 @@ EXTRA = [
 ]
 
 VARIANTS = {
-    "V1 只放寬股性（3%・結構停損・RR≥1）": dict(aggr_target=3.0, aggr_stop_atr=0.0, aggr_min_rr=1.0),
-    "V2 5%・結構停損・RR≥1": dict(aggr_target=5.0, aggr_stop_atr=0.0, aggr_min_rr=1.0),
-    "V3 5%・停損≥1.5ATR・RR≥0.5（預設）": dict(aggr_target=5.0, aggr_stop_atr=1.5, aggr_min_rr=0.5),
-    "V4 5%・停損≥2ATR・RR≥0.3": dict(aggr_target=5.0, aggr_stop_atr=2.0, aggr_min_rr=0.3),
-    "V5 3%・停損≥1.5ATR・RR≥0.3": dict(aggr_target=3.0, aggr_stop_atr=1.5, aggr_min_rr=0.3),
-    "V6 8%・停損≥2ATR・RR≥0.3": dict(aggr_target=8.0, aggr_stop_atr=2.0, aggr_min_rr=0.3),
+    "V1 只放寬股性（3%・結構停損・RR≥1）": dict(aggr_target=3.0, aggr_stop_atr=0.0, aggr_min_rr=1.0, aggr_early=3.0),
+    "V2 5%・結構停損・RR≥1": dict(aggr_target=5.0, aggr_stop_atr=0.0, aggr_min_rr=1.0, aggr_early=3.0),
+    "V3 5%・停損≥1.5ATR・RR≥0.5": dict(aggr_target=5.0, aggr_stop_atr=1.5, aggr_min_rr=0.5, aggr_early=3.0),
+    "V4 5%・停損≥2ATR・RR≥0.3": dict(aggr_target=5.0, aggr_stop_atr=2.0, aggr_min_rr=0.3, aggr_early=3.0),
+    "V5 3%・停損≥1.5ATR・RR≥0.3": dict(aggr_target=3.0, aggr_stop_atr=1.5, aggr_min_rr=0.3, aggr_early=3.0),
+    "V6 8%・停損≥2ATR・RR≥0.3（預設）": dict(aggr_target=8.0, aggr_stop_atr=2.0, aggr_min_rr=0.3, aggr_early=3.0),
 }
 
 t0 = time.time()
@@ -146,7 +146,7 @@ for v, g in res.items():
         continue
     out.append("  " + line("前段", g[g["訊號日"] < CUT]))
     out.append("  " + line("後段", g[g["訊號日"] >= CUT]))
-dv = "V3 5%・停損≥1.5ATR・RR≥0.5（預設）"
+dv = "V6 8%・停損≥2ATR・RR≥0.3（預設）"
 g = res[dv]
 if len(g):
     out.append(f"\n== 三、{dv}：依買點、依大盤 ==")
