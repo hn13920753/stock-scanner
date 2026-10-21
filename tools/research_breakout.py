@@ -416,6 +416,36 @@ try:
         if tr_rows:
             a = np.array(tr_rows)
             L_.append(f"  實際可交易（前 1%、同檔不重疊）：{len(a)} 筆・平均 {a.mean():+.2f}%・淨賺比例 {(a > 0).mean() * 100:.0f}%")
+        # 診斷：訊號集中在哪些日子？每天最多買 5 檔（分數最高）時的結果
+        sel = te2[te2["p"] >= thr]
+        byd = sel.groupby("date").agg(n=(yk, "size"), win=(yk, "mean"), avg=(rk, "mean"), mr20=("m_r20", "first"))
+        L_.append(f"  前 1% 訊號日：{len(byd)} 天；前 10 天就占 {byd['n'].nlargest(10).sum() / byd['n'].sum() * 100:.0f}% 筆數")
+        for dt, r in byd.sort_values("n", ascending=False).head(12).iterrows():
+            L_.append(f"    {dt:%Y-%m-%d}：{int(r['n'])} 檔・成功率 {r['win'] * 100:.0f}%・平均 {r['avg']:+.2f}%・大盤前20日 {r['mr20']:+.1f}%")
+        yr = sel.groupby(sel["date"].dt.year).agg(n=(yk, "size"), win=(yk, "mean"), avg=(rk, "mean"), days=("date", "nunique"))
+        L_.append("  各年：" + "、".join(f"{y} {int(r['n'])}筆/{int(r['days'])}天 成功{r['win'] * 100:.0f}% {r['avg']:+.2f}%" for y, r in yr.iterrows()))
+        top5 = te2.sort_values("p", ascending=False).groupby("date").head(5)
+        top5 = top5[top5["p"] >= np.quantile(pv, 0.95)]
+        L_.append(f"  每天最多 5 檔（分數前 5% 以上）：{len(top5)} 筆・{top5['date'].nunique()} 天・成功率 {top5[yk].mean() * 100:.0f}%・平均 {top5[rk].mean():+.2f}%")
+        # 拿掉大盤特徵：模型還有沒有本事？
+        F2 = [f for f in FEATS if not f.startswith("m_")]
+        clf2 = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, max_leaf_nodes=31,
+                                              min_samples_leaf=300, l2_regularization=1.0, random_state=0)
+        clf2.fit(tr[F2], tr[yk].astype(int))
+        pv2, pt2 = clf2.predict_proba(va[F2])[:, 1], clf2.predict_proba(te[F2])[:, 1]
+        for q in (0.9, 0.99):
+            s2 = te[pt2 >= np.quantile(pv2, q)]
+            L_.append(f"  （不給大盤資訊）前 {(1 - q) * 100:.0f}%：{len(s2)} 天次・{s2['date'].nunique()} 天・成功率 {s2[yk].mean() * 100:.0f}%・平均 {s2[rk].mean():+.2f}%")
+        # 2022 驗證年本身（門檻是用它定的，只看參考）
+        L_.append(f"  2022（定門檻年）前 1%：{(pv >= thr).sum()} 天次・成功率 {va[yk][pv >= thr].mean() * 100:.0f}%・平均 {va[rk][pv >= thr].mean():+.2f}%")
+        try:
+            from sklearn.inspection import permutation_importance
+            smp = te.sample(min(20000, len(te)), random_state=0)
+            pi = permutation_importance(clf, smp[FEATS], smp[yk].astype(int), n_repeats=3, random_state=0, scoring="roc_auc")
+            imp = pd.Series(pi.importances_mean, index=FEATS).sort_values(ascending=False).head(6)
+            L_.append("  最重要特徵：" + "、".join(f"{k} {v:.3f}" for k, v in imp.items()))
+        except Exception:  # noqa: BLE001
+            pass
 except Exception:  # noqa: BLE001
     import traceback
     L_.append("機器學習失敗：" + traceback.format_exc()[-800:])
