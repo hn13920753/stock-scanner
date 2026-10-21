@@ -383,6 +383,8 @@ try:
         frames.append(f.iloc[260:n - 1 - HOLD])
     D = pd.concat(frames).dropna(subset=FEATS[:-3])
     D["date"] = D.index
+    if os.environ.get("BO_DUMP"):
+        D.to_pickle(os.environ["BO_DUMP"])
     print(f"機器學習資料 {len(D)} 列")
     tr, va, te = D[D.date < "2022-01-01"], D[(D.date >= "2022-01-01") & (D.date < "2023-01-01")], D[D.date >= SPLIT]
     for lname in LAB:
@@ -446,6 +448,63 @@ try:
             L_.append("  最重要特徵：" + "、".join(f"{k} {v:.3f}" for k, v in imp.items()))
         except Exception:  # noqa: BLE001
             pass
+    def nonoverlap(df):
+        keep = []
+        for code, g in df.sort_values("date").groupby("code"):
+            last = None
+            for idx, dt in zip(g.index, g["date"]):
+                if last is None or np.busday_count(last.date(), dt.date()) > HOLD:
+                    keep.append((code, dt))
+                    last = dt
+        if not keep:
+            return df.iloc[0:0]
+        k = pd.MultiIndex.from_tuples(keep)
+        return df[pd.MultiIndex.from_arrays([df["code"], df["date"]]).isin(k)]
+
+    # ---------- 逐年滾動驗證（不給大盤資訊）：每年只用之前的資料訓練，門檻＝訓練期分數前 1%
+    F2 = [f for f in FEATS if not f.startswith("m_")]
+    L_.append("")
+    L_.append("【逐年滾動驗證・不給大盤資訊】每年用「前幾年」訓練、預測「下一年」；門檻＝前一年分數前 1%")
+    for lname in ("停利3%／停損5%", "停利5%／停損5%"):
+        yk, rk = "y_" + lname, "r_" + lname
+        allsel, cap = [], []
+        L_.append(f"  {lname}：")
+        for Y in range(2019, 2027):
+            trY = D[D.date < f"{Y - 1}-01-01"]
+            vaY = D[(D.date >= f"{Y - 1}-01-01") & (D.date < f"{Y}-01-01")]
+            teY = D[(D.date >= f"{Y}-01-01") & (D.date < f"{Y + 1}-01-01")]
+            if len(teY) == 0 or len(trY) < 50000:
+                continue
+            c3 = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, max_leaf_nodes=31,
+                                                min_samples_leaf=300, l2_regularization=1.0, random_state=0)
+            c3.fit(trY[F2], trY[yk].astype(int))
+            thr = np.quantile(c3.predict_proba(vaY[F2])[:, 1], 0.99)
+            p3 = c3.predict_proba(teY[F2])[:, 1]
+            sel = nonoverlap(teY[p3 >= thr])  # 同一檔 15 個交易日內只算一筆（不重複算同一段行情）
+            t5 = teY.assign(p=p3)
+            t5 = nonoverlap(t5[t5["p"] >= thr]).sort_values("p", ascending=False).groupby("date").head(3)
+            allsel.append(sel)
+            cap.append(t5)
+            if len(sel):
+                L_.append(f"    {Y}：{len(sel)} 筆（{sel['code'].nunique()} 檔、{sel['date'].nunique()} 天）・成功率 {sel[yk].mean() * 100:.0f}%・平均 {sel[rk].mean():+.2f}%"
+                          f"｜每天最多 3 檔：{len(t5)} 筆 成功率 {t5[yk].mean() * 100:.0f}% 平均 {t5[rk].mean():+.2f}%"
+                          f"｜當年全部 基準 {teY[yk].mean() * 100:.0f}%")
+            else:
+                L_.append(f"    {Y}：0 筆")
+        A = pd.concat(allsel) if allsel else pd.DataFrame()
+        Cp = pd.concat(cap) if cap else pd.DataFrame()
+        if len(A):
+            L_.append(f"    合計：{len(A)} 筆（同檔不重疊）・成功率 {A[yk].mean() * 100:.0f}%・平均 {A[rk].mean():+.2f}%｜"
+                      f"每天最多 3 檔 {len(Cp)} 筆・成功率 {Cp[yk].mean() * 100:.0f}%・平均 {Cp[rk].mean():+.2f}%・"
+                      f"賠最多一筆 {Cp[rk].min():+.1f}%")
+            win_years = sum(1 for _, g in Cp.groupby(Cp['date'].dt.year) if g[rk].mean() > 0)
+            L_.append(f"    每天最多 3 檔：{Cp['date'].dt.year.nunique()} 年中 {win_years} 年平均為正")
+            if lname == "停利3%／停損5%":
+                desc = Cp[F2].median()
+                L_.append("    被選中的股票典型樣子（中位數）：ATR% {:.1f}、距52週低 {:+.0f}%、距52週高 {:+.0f}%、"
+                          "20日漲跌 {:+.1f}%、RS 百分位 {:.0f}、RSI14 {:.0f}".format(
+                              desc['atrp'], desc['d_ll252'] * 100, desc['d_hh252'] * 100, desc['r20'],
+                              desc['rs'] * 100, desc['rsi14']))
 except Exception:  # noqa: BLE001
     import traceback
     L_.append("機器學習失敗：" + traceback.format_exc()[-800:])
