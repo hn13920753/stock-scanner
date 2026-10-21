@@ -18,6 +18,7 @@ import scanner as S  # noqa: E402
 from sectors import SECTORS, stocks_of  # noqa: E402
 
 BOOK = ROOT / "records" / "signals.csv"
+PAPER = ROOT / "records" / "paper_aggr.csv"  # 積極組紙上交易簿（V1.4 測試中，2026-10-22 起）
 today = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%Y-%m-%d")
 
 # 全部產業的股票（同一檔可能屬於多個產業）
@@ -28,8 +29,9 @@ for sec in SECTORS:
         sector_of.setdefault(s["code"], []).append(sec)
 
 book = R.load(BOOK)
+paper = R.load(PAPER)
 # 已不在清單、但還有未結束紀錄的股票，也要抓價格來驗證
-for rec in book.to_dict("records"):
+for rec in book.to_dict("records") + paper.to_dict("records"):
     c = str(rec["代號"])
     if c not in stocks and rec["狀態"] not in ("已出場", "未成交"):
         stocks[c] = {"code": c, "name": rec["名稱"], "market": "TW", "group": rec["子類"]}
@@ -46,6 +48,18 @@ book, added = R.add_signals(book, rows, sector_of, market)  # 再加今天的新
 
 BOOK.parent.mkdir(exist_ok=True)
 book.to_csv(BOOK, index=False, encoding="utf-8-sig")
+
+# 積極組紙上交易：不論 App 預設是否開啟，都用 f_aggr=True 另外記一本，只記積極組訊號
+hi_vol = {x["code"] for x in rows if x["r"] and (x["r"].get("atrp") or 0) > E.TH["atr_max"]}  # 只有高波動股可能是積極組
+rows_ag = [S.analyze_one(s, prices.get(s["code"]), {"f_aggr": True}, market, mkt, ctx.get(s["code"]))
+           for s in scan if s["code"] in hi_vol]
+paper = R.evaluate(paper, prices, today)
+paper, added_ag = R.add_signals(paper, rows_ag, sector_of, market, only_aggr=True)
+paper.to_csv(PAPER, index=False, encoding="utf-8-sig")
+pm = R.summary(paper)
+print(f"積極組紙上交易：新增 {added_ag} 筆；累計 {pm['signals']} 筆（待進場 {pm['pending']}・持有中 {pm['open']}・"
+      f"已出場 {pm['closed']}・未成交 {pm['skipped']}）"
+      + (f"；已出場平均 {pm['avg']:+.2f}%" if pm["closed"] else ""))
 
 dates = [x["r"]["date"] for x in rows if x["r"]]
 sm = R.summary(book)

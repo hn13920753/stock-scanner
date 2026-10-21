@@ -11,7 +11,7 @@
 - 進場（收盤型買點）：訊號日的下一個交易日開盤價。開盤 > 訊號收盤 × 1.01 → 未成交（不追高）；開盤 ≤ 停損 → 未成交。
 - 進場（掛單型買點，V1.3 起）：之後 3 個交易日內，開盤 ≤ 限價以開盤價成交、盤中最低 ≤ 限價以限價成交；
   成交前收盤跌破停損 → 取消；成交當天只檢查停損（與回測相同）。
-- 停利價依實際進場價重算（淨利 3%）；停損沿用訊號當天的計畫停損。
+- 停利價依實際進場價重算（淨利 3%；積極組依「淨利目標%」欄，通常 5%）；停損沿用訊號當天的計畫停損。
 - 逐日檢查：跳空開盤低於停損 → 以開盤價停損；盤中碰停損 → 停損價出場；同一天同時碰到停損與停利，先算停損。
 - 第 15 個交易日收盤仍未碰到 → 期滿以收盤價出場。已扣手續費與證交稅，未含滑價。
 """
@@ -31,6 +31,8 @@ COLUMNS = [
     "最大不利%", "最大有利%", "更新日",
     # V1.3 新增（舊紀錄為空白）
     "計畫進場價", "掛單", "過濾", "引擎版本",
+    # V1.4 新增：淨利目標（積極組 5%；空白＝預設 3%）
+    "淨利目標%",
 ]
 NO_CHASE = 0.01  # 開盤高於訊號收盤 1% 以上不追
 
@@ -46,13 +48,16 @@ def load(path) -> pd.DataFrame:
     return df[COLUMNS]
 
 
-def add_signals(book: pd.DataFrame, rows: list[dict], sector_of: dict, market) -> tuple[pd.DataFrame, int]:
-    """把今天「可進場」的股票加進紀錄（同一檔同一訊號日只記一次）。"""
+def add_signals(book: pd.DataFrame, rows: list[dict], sector_of: dict, market,
+                only_aggr: bool = False) -> tuple[pd.DataFrame, int]:
+    """把今天「可進場」的股票加進紀錄（同一檔同一訊號日只記一次）。only_aggr=True 只記積極組（紙上交易簿）。"""
     have = set(zip(book["代號"].astype(str), book["訊號日"].astype(str)))
     new = []
     for x in rows:
         r = x.get("r")
         if not r or not r["decision"].startswith("可進場") or not r.get("plan"):
+            continue
+        if only_aggr and not r["plan"].get("aggr"):
             continue
         key = (x["code"], r["date"])
         if key in have:
@@ -71,7 +76,7 @@ def add_signals(book: pd.DataFrame, rows: list[dict], sector_of: dict, market) -
             "大盤": (market or {}).get("state", "無法判定"), "狀態": "待進場",
             "計畫進場價": pl["entry"], "掛單": "是" if r["signal"].get("mode") == "limit" else "否",
             "過濾": "；".join((r.get("filters") or {}).get("info", []) + pl.get("halve", [])),
-            "引擎版本": E.ENGINE_VERSION,
+            "引擎版本": E.ENGINE_VERSION, "淨利目標%": pl.get("target", E.DEFAULT_PARAMS["target_net"]),
         })
     if new:
         book = pd.concat([book, pd.DataFrame(new, columns=COLUMNS)], ignore_index=True)
@@ -119,7 +124,9 @@ def evaluate_one(rec: dict, df: pd.DataFrame, hold: int = 15) -> dict:
         if entry <= stop:
             return {**rec, "狀態": "未成交", "結果": f"開盤 {entry:g} 已低於停損", "進場日": dates[0]}
 
-    tp = E.target_price(entry, E.DEFAULT_PARAMS["target_net"], buy_c, sell_c, etf)
+    tgt = pd.to_numeric(rec.get("淨利目標%"), errors="coerce")
+    tgt = float(tgt) if pd.notna(tgt) and tgt > 0 else E.DEFAULT_PARAMS["target_net"]
+    tp = E.target_price(entry, tgt, buy_c, sell_c, etf)
     out = {**rec, "進場日": dates[0], "進場價": round(entry, 2), "停利價": tp}
     mae = mfe = 0.0
     last = min(hold, len(after)) - 1
