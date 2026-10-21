@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_breakout.py", ".github/workflows/research-breakout.yml"]
+    paths: ["tools/research_breakout.py", "tools/research_dip.py", ".github/workflows/research-breakout.yml"]
 
 permissions:
   contents: write
@@ -28,6 +28,11 @@ jobs:
           mkdir -p research
           set -o pipefail
           python tools/research_breakout.py 2>&1 | tee research/breakout_log.txt
+        continue-on-error: true
+      - name: 強勢股大跌買進研究
+        run: |
+          set -o pipefail
+          python tools/research_dip.py 2>&1 | tee research/dip_log.txt
         continue-on-error: true
       - name: 保存結果
         if: always()
