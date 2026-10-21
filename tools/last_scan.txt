@@ -1,28 +1,28 @@
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 6146.TW"}}}
-$6146.TW: No data found, symbol may be delisted
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1815.TW"}}}
-$1815.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 4977.TWO"}}}
 $4977.TWO: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 4506.TW"}}}
+$8358.TW: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
+$6803.TW: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
+$3491.TW: No data found, symbol may be delisted
+$6146.TW: No data found, symbol may be delisted
+$7769.TWO: No data found, symbol may be delisted
+$6005.TWO: No data found, symbol may be delisted
 $4772.TW: No data found, symbol may be delisted
 $8021.TWO: No data found, symbol may be delisted
-$6005.TWO: No data found, symbol may be delisted
-$8358.TW: No data found, symbol may be delisted
-$4506.TW: No data found, symbol may be delisted
-$3491.TW: No data found, symbol may be delisted
-$7769.TWO: No data found, symbol may be delisted
 $6213.TWO: No data found, symbol may be delisted
-$6803.TW: No data found, symbol may be delisted
 
 12 Failed downloads:
-['6146.TW', '1815.TW', '4977.TWO', '4772.TW', '8021.TWO', '6005.TWO', '8358.TW', '4506.TW', '3491.TW', '7769.TWO', '6213.TWO', '6803.TW']: No data found, symbol may be delisted
-$8358.TW: No data found, symbol may be delisted
-$1815.TW: No data found, symbol may be delisted
-$3491.TW: No data found, symbol may be delisted
+['4977.TWO', '8358.TW', '4506.TW', '6803.TW', '1815.TW', '3491.TW', '6146.TW', '7769.TWO', '6005.TWO', '4772.TW', '8021.TWO', '6213.TWO']: No data found, symbol may be delisted
 $4772.TW: No data found, symbol may be delisted
+$3491.TW: No data found, symbol may be delisted
 $6146.TW: No data found, symbol may be delisted
-$6803.TW: No data found, symbol may be delisted
 $4506.TW: No data found, symbol may be delisted
-產業：⭐ 主動交易觀察池・股票87　共 87 檔　抓資料 8 秒・分析 44 秒
+$6803.TW: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
+$8358.TW: No data found, symbol may be delisted
+產業：⭐ 主動交易觀察池・股票87　共 87 檔　抓資料 9 秒・分析 44 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 40・不可進場 47・資料失敗 0
 
@@ -290,10 +290,10 @@ $00928.TW: No data found, symbol may be delisted
 
 2 Failed downloads:
 ['00888.TW', '00928.TW']: No data found, symbol may be delisted
-$00928.TW: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
-$00408A.TWO: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
 $00410A.TWO: No data found, symbol may be delisted
+$00408A.TWO: No data found, symbol may be delisted
 
   2303 聯電       不適合本策略 Yahoo Finance（2303.TW）     2428 根 2016-10-21～2026-10-21 收 128.00  股性波動過大（日均波動 ATR 4.9% > 4.5%），停損距離難以配合 3% 目標｜半導體 近 20 日比大盤 -3.0 個百分點
   2454 聯發科      不適合本策略 Yahoo Finance（2454.TW）     2429 根 2016-10-21～2026-10-21 收 4140.00  股性波動過大（日均波動 ATR 4.8% > 4.5%），停損距離難以配合 3% 目標｜IC 設計／晶圓代工 近 20 日比大盤 +1.7 個百分點
@@ -357,7 +357,7 @@ $00410A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・台股　共 86 檔　抓資料 26 秒・分析 20 秒
+產業：ETF・台股　共 86 檔　抓資料 21 秒・分析 20 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 73・不可進場 11・資料失敗 2
 
@@ -415,18 +415,18 @@ $00410A.TWO: No data found, symbol may be delisted
  00944 野村趨勢動能高息 不適合本策略 Yahoo Finance（00944.TW）    597 根 2024-05-09～2026-10-21 收 22.34  股性波動過小（ATR 1.2% < 1.2%），15 日內不易達 3%｜族群強弱：ETF 不適用
  00943 兆豐電子高息等權 等待    Yahoo Finance（00943.TW）    590 根 2024-05-20～2026-10-21 收 21.21  ｜族群強弱：ETF 不適用
   0052 富邦科技     等待    Yahoo Finance（0052.TW）     2373 根 2016-10-21～2026-10-21 收 62.90  ｜族群強弱：ETF 不適用
- 00881 國泰台灣科技龍頭 等待    Yahoo Finance（00881.TW）    1421 根 2020-12-10～2026-10-21 收 49.55  ｜族群強弱：ETF 不適用$009815.TW: No data found, symbol may be delisted
-$00955.TW: No data found, symbol may be delisted
+ 00881 國泰台灣科技龍頭 等待    Yahoo Finance（00881.TW）    1421 根 2020-12-10～2026-10-21 收 49.55  ｜族群強弱：ETF 不適用$00955.TW: No data found, symbol may be delisted
 $009823.TW: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
 
 3 Failed downloads:
-['009815.TW', '00955.TW', '009823.TW']: No data found, symbol may be delisted
-$009815.TW: No data found, symbol may be delisted
-$00955.TW: No data found, symbol may be delisted
+['00955.TW', '009823.TW', '009815.TW']: No data found, symbol may be delisted
 $009823.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
 $009828.TWO: No data found, symbol may be delisted
 $009826.TWO: No data found, symbol may be delisted
-$00409A.TWO: No data found, symbol may be delisted
 
  00891 中信關鍵半導體  等待    Yahoo Finance（00891.TW）    1313 根 2021-05-28～2026-10-21 收 35.43  ｜族群強弱：ETF 不適用
  00935 野村臺灣新科技50 等待    Yahoo Finance（00935.TW）    720 根 2023-11-01～2026-10-21 收 56.40  ｜族群強弱：ETF 不適用
@@ -477,7 +477,7 @@ $00409A.TWO: No data found, symbol may be delisted
 
 ======================================================================
 
-產業：ETF・國際　共 30 檔　抓資料 23 秒・分析 6 秒
+產業：ETF・國際　共 30 檔　抓資料 18 秒・分析 6 秒
 大盤：{'state': '盤整', 'score': 0.5, 'close': 46887.76953125, 'ma20': 48155.4814453125, 'ma60': 46166.97057291667, 'date': '2026-10-21'}
 可進場 0・等待 20・不可進場 7・資料失敗 3
 

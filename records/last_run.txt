@@ -1,32 +1,50 @@
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 00955.TW"}}}
-$00955.TW: No data found, symbol may be delisted
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009823.TW"}}}
-$009823.TW: No data found, symbol may be delisted
-$00928.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1815.TW"}}}
+$1815.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 6213.TWO"}}}
+$6213.TWO: No data found, symbol may be delisted
+$8358.TW: No data found, symbol may be delisted
+$4977.TWO: No data found, symbol may be delisted
+$7769.TWO: No data found, symbol may be delisted
+$6146.TW: No data found, symbol may be delisted
+$6803.TW: No data found, symbol may be delisted
+$3491.TW: No data found, symbol may be delisted
+$8021.TWO: No data found, symbol may be delisted
 $009815.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
-$1815.TW: No data found, symbol may be delisted
+$00955.TW: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
+$4772.TW: No data found, symbol may be delisted
+$6005.TWO: No data found, symbol may be delisted
 
-6 Failed downloads:
-['00955.TW', '009823.TW', '00928.TW', '009815.TW', '00888.TW', '1815.TW']: No data found, symbol may be delisted
+17 Failed downloads:
+['1815.TW', '6213.TWO', '8358.TW', '4977.TWO', '7769.TWO', '6146.TW', '6803.TW', '3491.TW', '8021.TWO', '009815.TW', '00928.TW', '00888.TW', '00955.TW', '009823.TW', '4506.TW', '4772.TW', '6005.TWO']: No data found, symbol may be delisted
+$8358.TW: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
+$4772.TW: No data found, symbol may be delisted
+$3491.TW: No data found, symbol may be delisted
+$6146.TW: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
+$6803.TW: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
 $00928.TW: No data found, symbol may be delisted
-$1815.TW: No data found, symbol may be delisted
-$00408A.TWO: No data found, symbol may be delisted
 $00410A.TWO: No data found, symbol may be delisted
-$00409A.TWO: No data found, symbol may be delisted
 $009823.TW: No data found, symbol may be delisted
+$00408A.TWO: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
 $009815.TW: No data found, symbol may be delisted
 $009826.TWO: No data found, symbol may be delisted
 $009828.TWO: No data found, symbol may be delisted
 $00955.TW: No data found, symbol may be delisted
-2026-10-20 執行・資料日期 2026-10-20・掃描 171 檔・新增訊號 0 筆
+積極組紙上交易：新增 2 筆；累計 2 筆（待進場 2・持有中 0・已出場 0・未成交 0）
+2026-10-21 執行・資料日期 2026-10-21・掃描 221 檔・新增訊號 0 筆
 累計 6 筆：待進場 0・持有中 2・已出場 2・未成交 2
 已出場：先到停利 0%・停損 100%・平均淨報酬 -0.70%
-          訊號日     代號          名稱      產業          子類    訊號收盤    計畫停損  計畫停利3%   風報比  回測樣本  回測勝率%  符合度%            買點                 型態  大盤   狀態         進場日    進場價    停利價         出場日    出場價              結果  淨報酬%  持有天數  最大不利%  最大有利%         更新日  計畫進場價  掛單  過濾  引擎版本
-0  2026-10-12  00940    元大台灣價值高息     ETF       台股高股息   13.34   13.18   13.80  1.90     6    NaN    94     回測型（保守買點）             缺口之上續漲  多頭  持有中  2026-10-13  13.26  13.72  2026-10-20  13.22                 -0.68   6.0  -0.45   2.71  2026-10-20    NaN NaN NaN   NaN
-1  2026-10-12  00757     統一FANG+     ETF  國際・美股／全球大盤  147.25  146.90  152.30  4.83    31   32.3    95  突破型（積極／確認買點）  缺口之上續漲、紅黑紅、突破大量黑K  多頭  未成交  2026-10-13    NaN    NaN         NaN    NaN  開盤 146.3 已低於停損   NaN   NaN    NaN    NaN  2026-10-13    NaN NaN NaN   NaN
-2  2026-10-12  00924  復華S&P500成長     ETF  國際・美股／全球大盤   34.66   34.47   35.84  3.22    17   23.5    94  突破型（積極／確認買點）             缺口之上續漲  多頭  未成交  2026-10-13    NaN    NaN         NaN    NaN   開盤 34.4 已低於停損   NaN   NaN    NaN    NaN  2026-10-13    NaN NaN NaN   NaN
-3  2026-10-14  00938      凱基優選30  ETF・台股      市值型／綜合   27.48   27.27   28.42  2.62    10   60.0    94  突破型（積極／確認買點）             大量雙腳反轉  多頭  已出場  2026-10-15  27.37  28.30  2026-10-15  27.27              停損 -0.75   1.0  -0.44   0.47  2026-10-15    NaN NaN NaN   NaN
-4  2026-10-14  00940    元大臺灣價值高息  ETF・台股      高股息／收益   13.50   13.18   13.96  1.09     6    NaN    94     回測型（保守買點）             缺口之上續漲  多頭  持有中  2026-10-15  13.38  13.84  2026-10-20  13.22                 -1.58   4.0  -1.35   1.79  2026-10-20    NaN NaN NaN   NaN
-5  2026-10-14  00882     中信中國高股息  ETF・國際          區域   15.23   15.11   15.75  2.57    13   30.8    83  突破型（積極／確認買點）             空轉多過空高  多頭  已出場  2026-10-15  15.15  15.67  2026-10-15  15.11              停損 -0.65   1.0  -0.73   0.07  2026-10-15    NaN NaN NaN   NaN
+          訊號日     代號          名稱      產業          子類    訊號收盤    計畫停損  計畫停利3%   風報比  回測樣本  回測勝率%  符合度%            買點                 型態  大盤   狀態         進場日    進場價    停利價         出場日    出場價              結果  淨報酬%  持有天數  最大不利%  最大有利%         更新日  計畫進場價  掛單  過濾  引擎版本  淨利目標%
+0  2026-10-12  00940    元大台灣價值高息     ETF       台股高股息   13.34   13.18   13.80  1.90     6    NaN    94     回測型（保守買點）             缺口之上續漲  多頭  持有中  2026-10-13  13.26  13.72  2026-10-21  13.38                  0.52   7.0  -0.45   2.71  2026-10-21    NaN NaN NaN   NaN    NaN
+1  2026-10-12  00757     統一FANG+     ETF  國際・美股／全球大盤  147.25  146.90  152.30  4.83    31   32.3    95  突破型（積極／確認買點）  缺口之上續漲、紅黑紅、突破大量黑K  多頭  未成交  2026-10-13    NaN    NaN         NaN    NaN  開盤 146.3 已低於停損   NaN   NaN    NaN    NaN  2026-10-13    NaN NaN NaN   NaN    NaN
+2  2026-10-12  00924  復華S&P500成長     ETF  國際・美股／全球大盤   34.66   34.47   35.84  3.22    17   23.5    94  突破型（積極／確認買點）             缺口之上續漲  多頭  未成交  2026-10-13    NaN    NaN         NaN    NaN   開盤 34.4 已低於停損   NaN   NaN    NaN    NaN  2026-10-13    NaN NaN NaN   NaN    NaN
+3  2026-10-14  00938      凱基優選30  ETF・台股      市值型／綜合   27.48   27.27   28.42  2.62    10   60.0    94  突破型（積極／確認買點）             大量雙腳反轉  多頭  已出場  2026-10-15  27.37  28.30  2026-10-15  27.27              停損 -0.75   1.0  -0.44   0.47  2026-10-15    NaN NaN NaN   NaN    NaN
+4  2026-10-14  00940    元大臺灣價值高息  ETF・台股      高股息／收益   13.50   13.18   13.96  1.09     6    NaN    94     回測型（保守買點）             缺口之上續漲  多頭  持有中  2026-10-15  13.38  13.84  2026-10-21  13.38                 -0.38   5.0  -1.35   1.79  2026-10-21    NaN NaN NaN   NaN    NaN
+5  2026-10-14  00882     中信中國高股息  ETF・國際          區域   15.23   15.11   15.75  2.57    13   30.8    83  突破型（積極／確認買點）             空轉多過空高  多頭  已出場  2026-10-15  15.15  15.67  2026-10-15  15.11              停損 -0.65   1.0  -0.73   0.07  2026-10-15    NaN NaN NaN   NaN    NaN
