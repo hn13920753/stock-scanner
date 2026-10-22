@@ -147,6 +147,9 @@ def run(d, mask, entry, net, stop_kind="signal_low", hold=HOLD):
             sl = L[i]
         elif stop_kind == "pb_low":
             sl = min(L[i], d["pb_low"].iat[i])
+        elif stop_kind.startswith("cap"):
+            p0 = C[i] if entry == "close" else O[i + 1]
+            sl = max(min(L[i], d["pb_low"].iat[i]), p0 * (1 - float(stop_kind[3:])))
         else:
             sl = (C[i] if entry == "close" else O[i + 1]) * (1 - float(stop_kind))
         if px <= sl * 1.001:            # 開盤已在停損下 → 不進場
@@ -221,7 +224,7 @@ for c, nme, m in WL:
     if df is not None:
         data[c] = features(df)
 print(f"抓到 {len(data)} 檔，{time.time() - t0:.0f} 秒")
-STOPS = [("signal_low", "紅K低點"), ("pb_low", "回檔低點"), ("0.07", "固定−7%"), ("0.10", "固定−10%")]
+STOPS = [("signal_low", "紅K低點"), ("pb_low", "回檔低點"), ("0.07", "固定−7%"), ("0.10", "固定−10%"), ("cap0.07", "回檔低點但最多−7%"), ("cap0.10", "回檔低點但最多−10%")]
 L_ = ["影片方法・出場參數比較（訊號當天收盤買、每筆 20 萬、扣費滑價、還原權息）", ""]
 for hold in (15, 30):
     L_.append(f"==================== 全部自選股｜最多持有 {hold} 天 ====================")
@@ -233,7 +236,7 @@ for hold in (15, 30):
         L_.append("")
     L_.append(f"  對照（多頭任一天買，同出場）｜最多 {hold} 天")
     for net in (0.04, 0.05):
-        for sk, sn in STOPS[2:]:
+        for sk, sn in STOPS[2:4]:
             ts = [run(dd, "base", "close", net, sk, hold) for dd in data.values()]
             ts = pd.concat([x for x in ts if len(x)], ignore_index=True)
             L_.append(line(f"任一天 停利{net*100:.0f}%｜停損{sn}", stats(ts)))
