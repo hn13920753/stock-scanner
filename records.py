@@ -2,7 +2,7 @@
 進場紀錄與「事後驗證」（前瞻測試，forward test）。
 
 做法：每個交易日收盤後，把系統判定「可進場」的股票原封不動記下來（當下的計畫停損、停利），
-之後每天用真實股價檢查：隔日開盤有沒有成交 → 15 個交易日內先碰到停利還是停損 → 記下實際結果。
+之後每天用真實股價檢查：隔日開盤有沒有成交 → 最長持有期內（「最長持有天」欄；舊紀錄 15 天）先碰到停利還是停損 → 記下實際結果。
 
 和回測不同：回測是拿過去的資料驗證，可能「事後諸葛」；這裡的每一筆都是「當天就留下的預測」，
 結果完全由之後的真實行情決定，不能改、不能挑。
@@ -11,9 +11,9 @@
 - 進場（收盤型買點）：訊號日的下一個交易日開盤價。開盤 > 訊號收盤 × 1.01 → 未成交（不追高）；開盤 ≤ 停損 → 未成交。
 - 進場（掛單型買點，V1.3 起）：之後 3 個交易日內，開盤 ≤ 限價以開盤價成交、盤中最低 ≤ 限價以限價成交；
   成交前收盤跌破停損 → 取消；成交當天只檢查停損（與回測相同）。
-- 停利價依實際進場價重算（淨利 3%；積極組依「淨利目標%」欄，通常 5%）；停損沿用訊號當天的計畫停損。
+- 停利價依實際進場價重算（依「淨利目標%」欄；V1.5 起短線 10%、回檔布局 10%）；停損沿用計畫停損，回檔布局改為實際進場價 −20%、不設不追價。
 - 逐日檢查：跳空開盤低於停損 → 以開盤價停損；盤中碰停損 → 停損價出場；同一天同時碰到停損與停利，先算停損。
-- 第 15 個交易日收盤仍未碰到 → 期滿以收盤價出場。已扣手續費與證交稅，未含滑價。
+- 最長持有天數（V1.5 起 60 天）收盤仍未碰到 → 期滿以收盤價出場。已扣手續費與證交稅，未含滑價。
 """
 from __future__ import annotations
 
@@ -33,6 +33,8 @@ COLUMNS = [
     "計畫進場價", "掛單", "過濾", "引擎版本",
     # V1.4 新增：淨利目標（積極組 5%；空白＝預設 3%）
     "淨利目標%",
+    # V1.5 新增：最長持有（空白＝舊紀錄 15 天）
+    "最長持有天",
 ]
 NO_CHASE = 0.01  # 開盤高於訊號收盤 1% 以上不追
 
@@ -77,6 +79,7 @@ def add_signals(book: pd.DataFrame, rows: list[dict], sector_of: dict, market,
             "計畫進場價": pl["entry"], "掛單": "是" if r["signal"].get("mode") == "limit" else "否",
             "過濾": "；".join((r.get("filters") or {}).get("info", []) + pl.get("halve", [])),
             "引擎版本": E.ENGINE_VERSION, "淨利目標%": pl.get("target", E.DEFAULT_PARAMS["target_net"]),
+            "最長持有天": pl.get("hold", 15),
         })
     if new:
         book = pd.concat([book, pd.DataFrame(new, columns=COLUMNS)], ignore_index=True)
@@ -98,6 +101,9 @@ def evaluate_one(rec: dict, df: pd.DataFrame, hold: int = 15) -> dict:
     O, H, L, C = (after[c].to_numpy(float) for c in ("open", "high", "low", "close"))
     dates = [d.strftime("%Y-%m-%d") for d in after.index]
     stop = float(rec["計畫停損"])
+    dip = str(rec.get("買點", "")).startswith("回檔布局")
+    hh = pd.to_numeric(rec.get("最長持有天"), errors="coerce")
+    hold = int(hh) if pd.notna(hh) and hh > 0 else hold
     limit_mode = str(rec.get("掛單")) == "是"
     if limit_mode:  # 掛單型：3 個交易日內觸價成交
         limit = float(rec["計畫進場價"])
@@ -119,7 +125,9 @@ def evaluate_one(rec: dict, df: pd.DataFrame, hold: int = 15) -> dict:
         after = after.iloc[k0:]
     else:
         entry = O[0]
-        if entry > float(rec["訊號收盤"]) * (1 + NO_CHASE):
+        if dip:
+            stop = E.round_down(entry * (1 - E.TH["dip_stop"]), etf)  # 回檔布局：依實際進場價 −20%
+        elif entry > float(rec["訊號收盤"]) * (1 + NO_CHASE):
             return {**rec, "狀態": "未成交", "結果": f"開盤 {entry:g} 高於訊號價 1% 以上，不追", "進場日": dates[0]}
         if entry <= stop:
             return {**rec, "狀態": "未成交", "結果": f"開盤 {entry:g} 已低於停損", "進場日": dates[0]}
@@ -134,7 +142,7 @@ def evaluate_one(rec: dict, df: pd.DataFrame, hold: int = 15) -> dict:
         mae = min(mae, L[j] / entry - 1)
         mfe = max(mfe, H[j] / entry - 1)
         exit_ = why = None
-        if (j > 0 or limit_mode) and O[j] <= stop:
+        if (j > 0 or limit_mode or dip) and O[j] <= stop:
             exit_, why = (min(O[j], entry) if j == 0 else O[j]), "停損（跳空）"
         elif L[j] <= stop:
             exit_, why = stop, "停損"

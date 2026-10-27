@@ -144,7 +144,19 @@ def classify(rows: list[dict]) -> dict:
     picks = sorted([x for x in rows if x["decision"].startswith("可進場")], key=sort_key)
     watch = [x for x in rows if x["decision"] == "等待" and trigger_gap(x) is not None]
     watch.sort(key=lambda x: (trigger_gap(x), -x["r"]["fit"]))
+    # 接近回檔布局價（測試中）：還沒跌到門檻、差 8 個百分點以內，依差距排序
+    dipw = []
+    for x in rows:
+        r = x.get("r") or {}
+        dh, dd = r.get("dist_high"), r.get("dip_drop")
+        if x["decision"].startswith("可進場") or dh is None or dd is None or not r.get("filter_flags", {}).get("f_dip"):
+            continue
+        gap = dh + dd  # 例：距高點 −24%、門檻 30% → 還差 6 個百分點
+        if 0 < gap <= 8:
+            dipw.append((gap, x))
+    dipw.sort(key=lambda t: t[0])
     return {
+        "dip_watch": [x for _, x in dipw[:WATCH_N]],
         "picks": picks[:TOP_N],
         "picks_total": len(picks),
         "watch": watch[:WATCH_N],
@@ -169,7 +181,7 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
             "掃描時間": now, "產業": sector, "資料日期": r.get("date", ""),
             "代號": x["code"], "名稱": x["name"], "子類": x["group"], "決策": x["decision"],
             "收盤": r.get("close"), "買進價": pl["entry"] if pl else None,
-            "停利": pl["tp3"] if pl else None, "2%停利": pl["tp2"] if pl else None,
+            "停利": pl["tp3"] if pl else None, "提早停利": pl["tp2"] if pl else None,
             "停損": pl["stop"] if pl else None,
             "風報比": round(pl["rr"], 2) if pl and math.isfinite(pl["rr"]) else None,
             "股數": pl["shares"] if pl else None, "預估最大損失": round(pl["max_loss"]) if pl else None,
@@ -177,6 +189,8 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
             "回測勝率%": round(st_["tp_rate"], 1) if st_.get("n", 0) >= MIN_SAMPLES else None,
             "符合度%": round(r["fit"]) if r else None,
             "觸發價": trig.get("price") if not pl else None,
+            "距60日高%": round(r["dist_high"], 1) if r.get("dist_high") is not None else None,
+            "回檔布局觸發價": round(r["dip_level"], 2) if r.get("dip_level") == r.get("dip_level") and r.get("dip_level") else None,
             "買點": (r.get("signal") or {}).get("type") if pl else None,
             "過濾（測試中）": "；".join((r.get("filters") or {}).get("info", [])),
             "主要原因": "；".join(r.get("why", [])[:2]) or x.get("error", ""),
