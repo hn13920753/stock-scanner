@@ -45,6 +45,26 @@ def run(sector, market):
     print("\n== 等待中、最接近觸發 ==")
     for x in res["watch"]:
         print(f"{x['code']} {x['name']} 收 {x['r']['close']} 觸發 {x['r']['trigger']['price']} 差 {S.trigger_gap(x):+.1f}%")
+    # 回檔布局觸發價（收盤後預先告訴使用者：收盤跌到這個價 → 隔天開盤買）
+    dl = []
+    for s in stocks:
+        p = prices.get(s["code"])
+        df = p[0] if p else None
+        if df is None or len(df) < 80:
+            continue
+        try:
+            an = E.Analyzer(df, s["code"], {}, mkt=MKT)
+        except Exception:  # noqa: BLE001
+            continue
+        i = an.n - 1
+        lvl, c, h = an.dip_level(i), float(an.C[i]), float(an.HI60[i])
+        if lvl == lvl and c > 0:
+            dl.append((c / lvl - 1, s, c, h, lvl, an.dip_drop()))
+    dl.sort(key=lambda t: t[0])
+    print("\n== 回檔布局觸發價（收盤 ≤ 觸發價 → 隔天開盤買）==")
+    for gap, s, c, h, lvl, x in dl[:15 if sector.startswith("⭐") else 5]:
+        tag = "已到價" if gap <= 0 else f"還差 {gap * 100:.1f}%"
+        print(f"{s['code']} {s['name']} 收 {c:g}｜60日高 {h:g}｜跌 {x * 100:.0f}% 觸發價 {E.round_down(lvl, E.is_etf(s['code'])):g}｜{tag}")
 
 
 MKT = E.load_index(E.DATA_YEARS)
