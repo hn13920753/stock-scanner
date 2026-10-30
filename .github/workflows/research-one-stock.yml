@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_one_stock.py", "tools/research_one_hold.py", "tools/research_one_period.py", ".github/workflows/research-one-stock.yml"]
+    paths: ["tools/research_one_stock.py", "tools/research_one_hold.py", "tools/research_one_period.py", "tools/research_rule_compare.py", ".github/workflows/research-one-stock.yml"]
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: mkdir -p research && python tools/research_one_period.py 3037 2025-01-01
+      - run: mkdir -p research && python tools/research_rule_compare.py
       - name: 保存
         if: always()
         run: |
