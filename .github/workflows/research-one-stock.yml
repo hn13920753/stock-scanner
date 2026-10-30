@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_one_stock.py", "tools/research_one_hold.py", "tools/research_one_period.py", "tools/research_rule_compare.py", "tools/research_ai_newrule.py", "tools/research_combo.py", ".github/workflows/research-one-stock.yml"]
+    paths: ["tools/research_one_stock.py", "tools/research_one_hold.py", "tools/research_one_period.py", "tools/research_rule_compare.py", "tools/research_ai_newrule.py", "tools/research_combo.py", "tools/debug_combo.py", ".github/workflows/research-one-stock.yml"]
 
 permissions:
   contents: write
@@ -23,12 +23,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: mkdir -p research && python tools/research_combo.py
+      - run: mkdir -p research && python tools/debug_combo.py
       - name: 保存
         if: always()
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add research/
+          git add research/ || true
           git commit -m "單股逐筆結果 [skip ci]" || exit 0
           for k in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

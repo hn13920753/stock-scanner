@@ -153,6 +153,20 @@ def hold50(start, end=None):
     return (s.iloc[-1] / CAP) ** (1 / yrs) - 1, (s / s.cummax() - 1).min(), mon
 
 
+def debug():
+    print(c50.loc["2025-05-20":"2025-06-30"].to_string())
+    print("0050 open/close ratio extremes", (c50.open/c50.close).describe())
+    for m in ("M1","M2"):
+        tr=M[m]
+        for idle in (False, True):
+            a=account(tr, idle, "2016-06-01", None, 0)
+            print(m, idle, a[0], a[1], a[3])
+
+
+if __name__ == "dbg":
+    debug()
+    raise SystemExit
+
 NAMES = {"M1": "綠K紅K（3%／10天／不停損）", "M2": "回檔布局 跌35%（10%／−20%／60天）",
          "M3": "回檔25%＋紅K確認（10%／−20%／60天）", "M4": "多頭回檔8%＋紅K（10%／−10%／60天）"}
 L = ["# 綜合機制研究（50 萬帳戶，每筆 10 萬、最多 5 筆）", f"股票池 {len(pool)} 檔（自選＋AI 產業）＋0050；還原權息；扣手續費、證交稅、滑價"]
