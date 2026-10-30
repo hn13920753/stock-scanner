@@ -275,7 +275,7 @@ def load_index(years: int = DATA_YEARS):
         h = yf.Ticker("^TWII").history(period=f"{years}y", interval="1d", auto_adjust=False)
         if h is None or len(h) < 60:
             return None
-        c = h["Close"].astype(float)
+        c = h["Close"].astype(float).dropna()  # 開盤前 Yahoo 可能先給今天一列空值，去掉
         c.index = pd.to_datetime(c.index).tz_localize(None).normalize()
         return c[~c.index.duplicated(keep="last")].sort_index()
     except Exception:
@@ -302,6 +302,8 @@ def market_env(c: pd.Series | None = None):
             return None
         ma20, ma60 = c.rolling(20).mean(), c.rolling(60).mean()
         score = float(market_states(c).iloc[-1])
+        if not np.isfinite(score):
+            return None
         state = {1.0: "多頭", 0.0: "空頭"}.get(score, "盤整")
         return {"state": state, "score": score, "close": float(c.iloc[-1]),
                 "ma20": float(ma20.iloc[-1]), "ma60": float(ma60.iloc[-1]),
@@ -1157,7 +1159,7 @@ class Analyzer:
         s10 = 0.0 if why and any(k in w for w in why for k in ("跌停", "破底", "衰退", "風報比", "股性")) else (1.0 if ok else 0.5)
         mod("10", "風控與資金管理", s10, "；".join(why) if why else ("通過" if ok else "尚無進場訊號"))
 
-        avail = [m["score"] for m in mods if m["score"] is not None]
+        avail = [m["score"] for m in mods if m["score"] is not None and np.isfinite(m["score"])]  # 空值視為無法判定
         fit = sum(avail) / len(avail) * 100 if avail else 0.0
 
         is_dip = bool(sig and sig.get("dip") and ok)

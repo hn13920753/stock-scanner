@@ -187,7 +187,7 @@ def export_table(rows: list[dict], sector: str, params: dict) -> pd.DataFrame:
             "股數": pl["shares"] if pl else None, "預估最大損失": round(pl["max_loss"]) if pl else None,
             "回測樣本": st_.get("n"),
             "回測勝率%": round(st_["tp_rate"], 1) if st_.get("n", 0) >= MIN_SAMPLES else None,
-            "符合度%": round(r["fit"]) if r else None,
+            "符合度%": round(r["fit"]) if r and r.get("fit") is not None and math.isfinite(r["fit"]) else None,
             "觸發價": trig.get("price") if not pl else None,
             "距60日高%": round(r["dist_high"], 1) if r.get("dist_high") is not None else None,
             "回檔布局觸發價": round(r["dip_level"], 2) if r.get("dip_level") == r.get("dip_level") and r.get("dip_level") else None,
