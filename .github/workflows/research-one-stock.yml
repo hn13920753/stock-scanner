@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: mkdir -p research && python tools/debug_combo.py
+      - run: mkdir -p research && python tools/debug_combo.py > research/debug.txt 2>&1
       - name: 保存
         if: always()
         run: |
