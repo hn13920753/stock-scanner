@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+# daily-record.yml also writes tools/last_scan.txt.
+concurrency:
+  group: records
+  cancel-in-progress: false
+
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -19,11 +24,48 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python tools/real_scan.py 2>&1 | tee tools/last_scan.txt
+      - id: scan
+        shell: bash
+        run: python tools/real_scan.py 2>&1 | tee tools/last_scan.txt
+      - name: 備份本次掃描結果
+        if: ${{ always() && steps.scan.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-scan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tools/last_scan.txt
+          if-no-files-found: error
       - name: 保存結果
+        shell: bash
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add tools/last_scan.txt
-          git commit -m "真實資料掃描結果 [skip ci]" || exit 0
-          git pull --rebase && git push
+          original_blob=$(git rev-parse HEAD:tools/last_scan.txt)
+          snapshot=$(mktemp)
+          cp tools/last_scan.txt "$snapshot"
+          trap 'rm -f "$snapshot"' EXIT
+
+          for attempt in 1 2 3; do
+            git fetch origin "$GITHUB_REF_NAME"
+            remote_blob=$(git rev-parse FETCH_HEAD:tools/last_scan.txt)
+            if [ "$remote_blob" != "$original_blob" ]; then
+              echo "::notice::遠端掃描結果已更新，保留遠端版本；本次結果請見執行附件。"
+              exit 0
+            fi
+
+            # Only in this disposable Actions checkout; snapshot is backed up above.
+            # Build on the latest branch without rebasing generated text.
+            git reset --hard FETCH_HEAD
+            cp "$snapshot" tools/last_scan.txt
+            git add tools/last_scan.txt
+            if git diff --cached --quiet; then
+              echo "掃描結果未變更。"
+              exit 0
+            fi
+            git commit -m "真實資料掃描結果 [skip ci]"
+            if git push origin "HEAD:refs/heads/$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            echo "推送未成功，重新檢查遠端（第 $attempt 次）。"
+          done
+          echo "::error::三次推送皆未成功；本次掃描結果仍可由執行附件下載。"
+          exit 1
