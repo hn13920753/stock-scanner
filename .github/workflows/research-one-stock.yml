@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_dip_single.py"]
+    paths: ["tools/dip_list_check.py", "dip_view.py"]
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: mkdir -p research && python tools/research_dip_single.py
+      - run: mkdir -p research && python tools/dip_list_check.py
       - name: 保存
         if: always()
         run: |
