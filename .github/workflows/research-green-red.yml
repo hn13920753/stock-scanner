@@ -1,0 +1,39 @@
+name: 綠K紅K回測
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["tools/research_green_red.py", ".github/workflows/research-green-red.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: records
+  cancel-in-progress: false
+
+jobs:
+  greenred:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: 綠K紅K回測
+        run: |
+          mkdir -p research
+          set -o pipefail
+          python tools/research_green_red.py 2>&1 | tee research/green_red_log.txt
+        continue-on-error: true
+      - name: 保存結果
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add research/
+          git commit -m "綠K紅K回測結果 [skip ci]" || exit 0
+          for k in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
