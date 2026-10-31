@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["tools/research_book_rules.py"]
+    paths: ["tools/research_book_nolimit.py"]
 
 permissions:
   contents: write
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: mkdir -p research && python tools/research_book_rules.py
+      - run: mkdir -p research && python tools/research_book_nolimit.py
       - name: 保存
         if: always()
         run: |
