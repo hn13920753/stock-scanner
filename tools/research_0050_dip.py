@@ -9,7 +9,7 @@ import yfinance as yf
 FEE, TAX, SLIP = 0.001425, 0.001, 0.001
 BC, SC = FEE + SLIP, FEE + TAX + SLIP
 d = yf.Ticker("0050.TW").history(period="11y", auto_adjust=True, actions=False)
-d = d[d.Volume > 0].rename(columns=str.lower)
+d = d[d.Volume > 0].dropna(subset=["Open", "High", "Low", "Close"]).rename(columns=str.lower)
 d.index = pd.to_datetime(d.index).tz_localize(None).normalize()
 O, H, L, C = (d[k].to_numpy() for k in ("open", "high", "low", "close"))
 dd = (d.close / d.high.rolling(60).max() - 1).to_numpy()
