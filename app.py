@@ -13,6 +13,9 @@ import chips_view as CV
 import dip_view as DV
 import engine as E
 import market_chips as MC
+import paper_store as PST
+import paper_view as PV
+import quotes as QT
 import records as REC
 import records_view as RECV
 import report_view as RV
@@ -21,7 +24,7 @@ import sectors as SEC
 
 # Streamlit Cloud 更新程式時，可能先換掉 app.py、卻還在用舊版的其他檔案（造成 ImportError）。
 # 每次執行都重新載入本專案的模組，確保所有檔案是同一個版本。
-for _m in (E, MC, SEC, S, REC, RV, CV, RECV, DV):
+for _m in (E, MC, SEC, S, REC, RV, CV, RECV, DV, QT, PST, PV):
     importlib.reload(_m)
 SECTORS, parse_csv, stocks_of = SEC.SECTORS, SEC.parse_csv, SEC.stocks_of
 
@@ -88,7 +91,10 @@ def win_text(r):
 
 
 # ------------------------------------------------------------------
-page = st.radio("切換頁面", ["🔎 產業掃描", "🪂 跌深清單", "📒 進場紀錄與驗證"], horizontal=True)
+page = st.radio("切換頁面", ["🔎 產業掃描", "🪂 跌深清單", "💰 模擬交易", "📒 進場紀錄與驗證"], horizontal=True)
+if page.startswith("💰"):
+    PV.render()
+    st.stop()
 if page.startswith("📒"):
     RECV.render()
     st.stop()
