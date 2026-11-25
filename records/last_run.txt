@@ -1,57 +1,56 @@
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 6005.TWO"}}}
-$6005.TWO: No data found, symbol may be delisted
-HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 4772.TW"}}}
-$4772.TW: No data found, symbol may be delisted
-$4977.TWO: No data found, symbol may be delisted
-$00888.TW: No data found, symbol may be delisted
-$6146.TW: No data found, symbol may be delisted
-$00928.TW: No data found, symbol may be delisted
-$7769.TWO: No data found, symbol may be delisted
-$8358.TW: No data found, symbol may be delisted
-$1815.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 6213.TWO"}}}
 $6213.TWO: No data found, symbol may be delisted
-$4506.TW: No data found, symbol may be delisted
-$3491.TW: No data found, symbol may be delisted
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 6803.TW"}}}
 $6803.TW: No data found, symbol may be delisted
-$8021.TWO: No data found, symbol may be delisted
+$6146.TW: No data found, symbol may be delisted
+$4506.TW: No data found, symbol may be delisted
+$00888.TW: No data found, symbol may be delisted
+$7769.TWO: No data found, symbol may be delisted
+$6005.TWO: No data found, symbol may be delisted
+$1815.TW: No data found, symbol may be delisted
 $00955.TW: No data found, symbol may be delisted
-$009823.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
+$4772.TW: No data found, symbol may be delisted
 $009815.TW: No data found, symbol may be delisted
+$8358.TW: No data found, symbol may be delisted
+$4977.TWO: No data found, symbol may be delisted
+$8021.TWO: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$3491.TW: No data found, symbol may be delisted
 
-18 Failed downloads:
-['009816.TW']: OperationalError('database is locked')
-['6005.TWO', '4772.TW', '4977.TWO', '00888.TW', '6146.TW', '00928.TW', '7769.TWO', '8358.TW', '1815.TW', '6213.TWO', '4506.TW', '3491.TW', '6803.TW', '8021.TWO', '00955.TW', '009823.TW', '009815.TW']: No data found, symbol may be delisted
+17 Failed downloads:
+['6213.TWO', '6803.TW', '6146.TW', '4506.TW', '00888.TW', '7769.TWO', '6005.TWO', '1815.TW', '00955.TW', '00928.TW', '4772.TW', '009815.TW', '8358.TW', '4977.TWO', '8021.TWO', '009823.TW', '3491.TW']: No data found, symbol may be delisted
 $1815.TW: No data found, symbol may be delisted
 $8358.TW: No data found, symbol may be delisted
 $3491.TW: No data found, symbol may be delisted
 $4772.TW: No data found, symbol may be delisted
-$6803.TW: No data found, symbol may be delisted
 $6146.TW: No data found, symbol may be delisted
 $4506.TW: No data found, symbol may be delisted
-$009823.TW: No data found, symbol may be delisted
-$00928.TW: No data found, symbol may be delisted
-$009815.TW: No data found, symbol may be delisted
-$00409A.TWO: No data found, symbol may be delisted
 $00888.TW: No data found, symbol may be delisted
+$6803.TW: No data found, symbol may be delisted
+$00928.TW: No data found, symbol may be delisted
+$009823.TW: No data found, symbol may be delisted
+$00409A.TWO: No data found, symbol may be delisted
 $009828.TWO: No data found, symbol may be delisted
+$009815.TW: No data found, symbol may be delisted
 $00955.TW: No data found, symbol may be delisted
-積極組紙上交易：新增 0 筆；累計 38 筆（待進場 2・持有中 0・已出場 22・未成交 14）；已出場平均 -10.93%
-2026-11-25 執行・資料日期 2026-11-24・掃描 221 檔・新增訊號 0 筆
-累計 1644 筆：待進場 270・持有中 406・已出場 961・未成交 7
-已出場：先到停利 41%・停損 59%・平均淨報酬 -7.59%
-             訊號日      代號        名稱      產業      子類   訊號收盤   計畫停損  計畫停利3%   風報比  回測樣本  回測勝率%  符合度%            買點    型態  大盤   狀態  進場日  進場價  停利價  出場日  出場價   結果  淨報酬%  持有天數  最大不利%  最大有利%  更新日      計畫進場價 掛單                                                                              過濾                 引擎版本  淨利目標%  最長持有天
-1629  2026-11-24  00985A  主動野村台灣50  ETF・台股     主動式  16.84  13.47   18.60  0.49     6    NaN    61  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  16.840000  否                                             停損距離 3.66 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1630  2026-11-24  00993A    主動安聯台灣  ETF・台股     主動式   9.37   7.49   10.35  0.49     1    NaN    39  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   9.370000  否                                             停損距離 2.72 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1631  2026-11-24  00404A  主動聯博動能50  ETF・台股     主動式   7.85   6.27    8.67  0.49     0    NaN    39  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   7.850000  否                                             停損距離 4.12 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1632  2026-11-24  00995A  主動中信台灣卓越  ETF・台股     主動式  12.10   9.68   13.37  0.49     1    NaN    61  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  12.100000  否                                             停損距離 2.76 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1633  2026-11-24  00996A  主動兆豐台灣豐收  ETF・台股     主動式   9.72   7.77   10.74  0.49     1    NaN    33  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   9.720000  否                                             停損距離 2.79 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1634  2026-11-24  00401A  主動摩根台灣鑫收  ETF・台股     主動式  11.32   9.05   12.51  0.49     0    NaN    50  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  11.320000  否                                             停損距離 4.32 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1635  2026-11-24  00987A  主動台新優勢成長  ETF・台股     主動式  11.75   9.40   12.98  0.49     1    NaN    33  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  11.750000  否                                             停損距離 2.58 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1636  2026-11-24  00408A  主動第一金優股息  ETF・台股     主動式   7.70   6.15    8.51  0.49     0    NaN    39  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   7.700000  否                                             停損距離 3.71 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1637  2026-11-24  00997A  主動群益美國增長  ETF・國際     主動式   8.87   7.09    9.80  0.49     1    NaN    33  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   8.870000  否                                             停損距離 5.67 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1638  2026-11-24   00830   國泰費城半導體  ETF・國際  半導體／科技  71.10  56.85   78.55  0.49    30   50.0    60  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  71.099998  否                                             停損距離 4.40 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1639  2026-11-24   00735    國泰臺韓科技  ETF・國際  半導體／科技  83.85  67.05   92.60  0.49    16   56.2    56  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  83.849998  否                                             停損距離 3.40 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1640  2026-11-24   00712   復華富時不動產  ETF・國際    產業主題   6.54   5.23    7.23  0.49    14   50.0    33  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   6.540000  否                                            停損距離 11.15 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1641  2026-11-24  009821  野村稀土關鍵資源  ETF・國際    產業主題  10.24   8.19   11.31  0.49     0    NaN    28  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  10.240000  否                                             停損距離 5.69 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1642  2026-11-24   00895     富邦未來車  ETF・國際    產業主題  45.12  42.93   49.83  1.92    15   73.3    56     突破收盤買（積極）  島型反轉  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  45.119999  否  停損距離 1.27 倍 ATR；加權指數空頭；族群強弱：ETF 不適用；早期空轉多買點；加權指數空頭（收盤 < MA20 < MA60），股數減半【測試中】  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
-1643  2026-11-24   00909  國泰數位支付服務  ETF・國際    產業主題  30.99  24.79   34.23  0.49    22   63.6    33  回檔布局買（跌 20%）   NaN  空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  30.990000  否                                             停損距離 4.35 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+積極組紙上交易：新增 0 筆；累計 38 筆（待進場 0・持有中 2・已出場 22・未成交 14）；已出場平均 -10.93%
+2026-11-25 執行・資料日期 2026-11-25・掃描 221 檔・新增訊號 145 筆
+累計 1789 筆：待進場 145・持有中 628・已出場 1008・未成交 8
+已出場：先到停利 43%・停損 57%・平均淨報酬 -7.05%
+             訊號日      代號        名稱      產業       子類   訊號收盤   計畫停損  計畫停利3%   風報比  回測樣本  回測勝率%  符合度%            買點 型態  大盤   狀態  進場日  進場價  停利價  出場日  出場價   結果  淨報酬%  持有天數  最大不利%  最大有利%  更新日      計畫進場價 掛單                                    過濾                 引擎版本  淨利目標%  最長持有天
+1774  2026-11-25  00996A  主動兆豐台灣豐收  ETF・台股      主動式   8.91   7.12    9.84  0.49     1    NaN    33  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   8.910000  否   停損距離 2.59 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1775  2026-11-25  00401A  主動摩根台灣鑫收  ETF・台股      主動式  10.64   8.51   11.75  0.49     0    NaN    39  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  10.640000  否   停損距離 4.33 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1776  2026-11-25  00987A  主動台新優勢成長  ETF・台股      主動式  11.08   8.86   12.24  0.49     1    NaN    39  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  11.080000  否   停損距離 2.44 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1777  2026-11-25  00408A  主動第一金優股息  ETF・台股      主動式   7.16   5.72    7.91  0.49     0    NaN    33  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   7.160000  否   停損距離 3.58 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1778  2026-11-25  00997A  主動群益美國增長  ETF・國際      主動式   8.30   6.64    9.17  0.49     1    NaN    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   8.300000  否   停損距離 5.78 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1779  2026-11-25  00402A  主動安聯美國科技  ETF・國際      主動式   7.99   6.39    8.83  0.49     0    NaN    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   7.990000  否   停損距離 7.26 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1780  2026-11-25  009820  元大納斯達克精選  ETF・國際  美股／全球大盤   8.57   6.85    9.47  0.49     0    NaN    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   8.570000  否   停損距離 8.15 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1781  2026-11-25   00830   國泰費城半導體  ETF・國際   半導體／科技  63.25  50.60   69.85  0.49    30   50.0    30  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  63.250000  否   停損距離 4.59 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1782  2026-11-25   00941   中信上游半導體  ETF・國際   半導體／科技  21.64  17.31   23.90  0.49     6    NaN    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  21.639999  否   停損距離 7.66 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1783  2026-11-25   00735    國泰臺韓科技  ETF・國際   半導體／科技  76.70  61.35   84.70  0.49    16   56.2    33  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  76.699997  否   停損距離 3.86 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1784  2026-11-25   00712   復華富時不動產  ETF・國際     產業主題   6.76   5.40    7.47  0.49    14   50.0    39  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   6.760000  否  停損距離 10.73 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1785  2026-11-25   00893   國泰智能電動車  ETF・國際     產業主題  36.45  29.16   40.25  0.49    27   37.0    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  36.450001  否   停損距離 6.24 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1786  2026-11-25  009821  野村稀土關鍵資源  ETF・國際     產業主題   9.97   7.97   11.01  0.49     0    NaN    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN   9.970000  否   停損距離 5.97 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1787  2026-11-25   00895     富邦未來車  ETF・國際     產業主題  42.30  33.83   46.71  0.49    15   73.3    33  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  42.299999  否   停損距離 6.69 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
+1788  2026-11-25   00909  國泰數位支付服務  ETF・國際     產業主題  28.58  22.86   31.56  0.49    22   63.6    28  回檔布局買（跌 20%）     空頭  待進場  NaN  NaN  NaN  NaN  NaN  NaN   NaN   NaN    NaN    NaN  NaN  28.580000  否   停損距離 4.29 倍 ATR；加權指數空頭；族群強弱：ETF 不適用  V1.5（量化門檻 V0.5・測試中）   10.0   60.0
